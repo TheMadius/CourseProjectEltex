@@ -1,76 +1,83 @@
- #include <time.h>
+#include <time.h>
+#include <string.h>
 
- /* Число символов для обозначения серийного номера ONT в текстовом формате. */
-int const   ONT_SERIAL_NUM_SIZE = 16;   
- /* Число символов для обозначения наименования ONT в текстовом формате. */     
-int const   ONT_EQ_ID_SIZE = 18;  
-/* Число символов для обозначения версии прошивки ONT в текстовом формате. */            
-int const   ONT_FW_VERSION_SIZE = 32;  
- /* Число записей для одного ONT соединения. */       
-int const   NUM_OF_RECORDS = 10;       
- /* Число ONT соединений. */
-int const   NUM_OF_ONT_CONNECTIONS = 2048;    
+/// Константы для обозначения размеров полей структы Ont
+typedef enum Ont_connection_fields_sizes
+{
 
-/* Статусы ONT соединения. */
+    ONT_SERIAL_NUM_SIZE = 16,  
+    ONT_EQ_ID_SIZE = 18,          
+    ONT_FW_VERSION_SIZE = 32,
+} Ont_connection_fields_sizes;
+
+/// Константы для обозначения количества элементов базовой структуры
+typedef enum Based_structure_elements_num
+{
+    NUM_OF_RECORDS = 10,
+    NUM_OF_ONT_CONNECTIONS = 2048,
+} Based_structure_elements_num;
+
+/// Константы для обозначения ONT состояний
 typedef enum Ont_status
 {
-    /* Активация. */
-    Activation = 0, 
-     /* Успешная конфигурация Ont. */
-    Working,  
-     /* Ошибка конфигурации.*/     
-    CfgFail,       
-    Block
+    ACTIVATION = 0, 
+    WORKING,   
+    CFGFAIL,       
 }   Ont_status;
 
-/* Структура записи, информация которой приходит извне. */
+/// Структура ONT событий
 typedef struct Ont_connection
 {
-    /* Серийный номер ONT в текстовом формате. */
-    char* serial; 
-    /* Наименование ONT в текстовом формате. */       
-    char* eq_id;   
-    /* Версия прошивки ONT в текстовом формате. */    
-    char* fw_version;    
-    /* Время активации. День, год, час, минута, секунда. */
-    time_t link_up;   
-    /* Время деактивации. День, год, час, минута, секунда. */      
+    char serial[ONT_SERIAL_NUM_SIZE];    
+    char eq_id[ONT_EQ_ID_SIZE];   
+    char fw_version[ONT_FW_VERSION_SIZE];    
+    time_t link_up;       
     time_t link_down;   
-    /* Статус ONT. Возможные статусы: Activation, Working, CfgFail, Block. */    
     enum Ont_status status; 
 
 } Ont_connection;
 
-/* Входная информация об ONT соединении. */
-typedef struct Ont_input_info
+/// Структура с данными об ONT, которая поступает извне
+typedef struct Ont_info
 {
-    /* Номер порта */
     int num_port;
-    /* Номер устройства  */
     int num_ont;
-    /* Серийный номер ONT в текстовом формате. */
-    char* serial; 
-    /* Наименование ONT в текстовом формате. */       
-    char* eq_id;   
-    /* Версия прошивки ONT в текстовом формате. */    
-    char* fw_version;    
-    /* Время активации. День, год, час, минута, секунда. */
-    time_t link_up;   
-    /* Время деактивации. День, год, час, минута, секунда. */      
+    char serial[ONT_SERIAL_NUM_SIZE];    
+    char eq_id[ONT_EQ_ID_SIZE];
+    char fw_version[ONT_FW_VERSION_SIZE]; 
+    time_t link_up;    
     time_t link_down;   
-    /* Статус ONT. Возможные статусы: Activation, Working, CfgFail, Block. */    
     enum Ont_status status; 
-} Ont_input_info;
+} Ont_info;
 
-/* Список записей на массиве.  */
+/// Структура для хранения событий
 typedef struct Ont_records
 {
     int cur_index_of_event; 
-    struct Ont_connection* records;
+    struct Ont_connection ont_connection[NUM_OF_RECORDS];
 } Ont_records;
 
-/* Функция расчитывает уникальный индекс для ONT соединения. */
-int get_index(int num_port, int num_ont)
+/// Базовая структура для хранения информации об ONT соединений
+static struct Ont_records ont_records[NUM_OF_RECORDS];
+
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
+int get_index(
+    int num_port, 
+    int num_ont)
 {
     return (num_port * 128 + num_ont);
+}
+
+/// Добавление нового события в базовую структуру
+void add_new_element(Ont_info *ont_info)
+{
+    int index = get_index(ont_info->num_port, ont_info->num_ont);
+    int cur_index_of_event = ont_records[index].cur_index_of_event;
+    Ont_connection *ont_connection = &(ont_records[index].ont_connection[cur_index_of_event]);
+
+    strcpy(ont_connection->serial, ont_info->serial);
+    strcpy(ont_connection->eq_id, ont_info->eq_id);
+    strcpy(ont_connection->fw_version, ont_info->fw_version);
+    ont_connection->link_up = ont_info->link_up;
+    ont_connection->link_down = ont_info->link_down;
 }
