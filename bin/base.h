@@ -69,3 +69,8 @@ typedef struct Ont_records
     struct Ont_connection* records;
 } Ont_records;
 
+/* Функция расчитывает уникальный индекс для ONT соединения. */
+int get_index(int num_port, int num_ont)
+{
+    return (num_port * 128 + num_ont);
+}
