@@ -59,5 +59,8 @@ typedef struct Ont_records
     struct Ont_connection records[NUM_OF_RECORDS];
 } Ont_records;
 
+/// Инициализация библиотеки
+void init(void);
+
 #endif
 
