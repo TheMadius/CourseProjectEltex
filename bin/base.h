@@ -62,5 +62,8 @@ typedef struct Ont_records
 /// Инициализация библиотеки
 void init(void);
 
+/// Деинициализация библиотеки
+void close_dll(void);
+
 #endif
 
