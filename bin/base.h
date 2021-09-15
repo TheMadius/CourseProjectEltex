@@ -3,10 +3,10 @@
 
 #include <time.h>
 
+
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
 {
-
     ONT_SERIAL_NUM_SIZE = 16,  
     ONT_EQ_ID_SIZE = 18,          
     ONT_FW_VERSION_SIZE = 32
@@ -15,6 +15,8 @@ typedef enum Ont_connection_fields_sizes
 /// Константы для обозначения количества элементов базовой структуры
 typedef enum Based_structure_elements_num
 {
+    NUM_OF_PORTS = 16,
+    NUM_OF_ONT_ON_PORT = 128,
     NUM_OF_RECORDS = 10,
     NUM_OF_ONT_CONNECTIONS = 2048
 } Based_structure_elements_num;
@@ -64,6 +66,9 @@ void init(void);
 
 /// Деинициализация библиотеки
 void close_dll(void);
+
+/// Функция получения карточки по одной ONT
+Ont_records* get_map(int num_port, int num_ont);
 
 #endif
 
