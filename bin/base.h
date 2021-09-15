@@ -1,4 +1,7 @@
- #include <time.h>
+#ifndef BASE_H
+#define BASE_H
+
+#include <time.h>
 
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
@@ -58,4 +61,6 @@ typedef struct Ont_records
 
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_RECORDS];
+
+#endif
 
