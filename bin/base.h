@@ -47,7 +47,7 @@ typedef struct Ont_info
     time_t link_up;    
     time_t link_down;   
     enum Ont_status status; 
-} Ont_input_info;
+} Ont_info;
 
 /// Структура для хранения событий
 typedef struct Ont_records
@@ -62,7 +62,4 @@ static struct Ont_records ont_records[NUM_OF_RECORDS];
 /// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 int get_index(
     int num_port, 
-    int num_ont)
-{
-    return (num_port * 128 + num_ont);
-}
+    int num_ont);
