@@ -39,6 +39,26 @@ typedef struct Ont_connection
 
 } Ont_connection;
 
+typedef struct Ont_input_info
+{
+    /* Номер порта */
+    int num_port;
+    /* Номер устройства  */
+    int num_ont;
+    /* Серийный номер ONT в текстовом формате. */
+    char serial[ONT_SERIAL_NUM_SIZE]; 
+    /* Наименование ONT в текстовом формате. */       
+    char eq_id[ONT_NAME_SIZE];   
+    /* Версия прошивки ONT в текстовом формате. */    
+    char fw_version[ONT_FW_VERSION_SIZE];    
+    /* Время активации. День, год, час, минута, секунда. */
+    time_t link_up;   
+    /* Время деактивации. День, год, час, минута, секунда. */      
+    time_t link_down;   
+    /* Статус ONT. Возможные статусы: Activation, Working, CfgFail, Block. */    
+    enum Ont_status status; 
+} Ont_input_info
+
 /* Список записей на массиве.  */
 typedef struct Ont_records
 {
