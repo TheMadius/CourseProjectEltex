@@ -57,5 +57,5 @@ typedef struct Ont_records
 } Ont_records;
 
 /// Базовая структура для хранения информации об ONT соединений
-static struct Ont_records ont_records[NUM_OF_RECORDS];
+static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS];
 
