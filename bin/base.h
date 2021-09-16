@@ -61,10 +61,13 @@ typedef struct Ont_records
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS];
 
-/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
-int get_index(
+/// Инициализация библиотеки
+void init(void);
+
+/// Деинициализация библиотеки
+void close_dll(void);
+
+/// Функция получения карточки по одной ONT
+Ont_records* get_map(
     int num_port, 
     int num_ont);
-    
-/// Добавление нового события в базовую структуру
-void add_new_element(Ont_info *ont_info);
