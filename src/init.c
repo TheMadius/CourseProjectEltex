@@ -20,14 +20,14 @@ Ont_records* get_map(
     int num_port,
     int num_ont)
 {
-    if  (  num_port < 0
-        || num_port >= NUM_OF_PORTS)
+    if  (0 > num_port 
+        || NUM_OF_PORTS <= num_port)
     {
         return NULL;
     }
     
-    if  (  num_ont < 0
-        || num_ont >= NUM_OF_ONT_ON_PORT)
+    if  (0 > num_ont
+        || NUM_OF_ONT_ON_PORT <= num_ont)
     {
         return NULL;
     }
