@@ -72,6 +72,7 @@ Ont_records* get_map(
     int num_port, 
     int num_ont);
 
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 int get_index(
     int num_port, 
     int num_ont);
