@@ -1,3 +1,6 @@
+#ifndef BASE_H
+#define BASE_H
+
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
@@ -7,7 +10,7 @@ typedef enum Ont_connection_fields_sizes
 {
     ONT_SERIAL_NUM_SIZE = 16,  
     ONT_EQ_ID_SIZE = 18,          
-    ONT_FW_VERSION_SIZE = 32,
+    ONT_FW_VERSION_SIZE = 32
 } Ont_connection_fields_sizes;
 
 /// Константы для обозначения количества элементов базовой структуры
@@ -81,3 +84,5 @@ int get_index(
 
 /// Добавление нового события в базовую структуру
 void add_new_element(Ont_info *ont_info); 
+
+#endif //BASE_H

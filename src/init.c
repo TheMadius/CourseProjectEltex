@@ -1,9 +1,13 @@
 #include <string.h>
 #include "base.h"
+#include "list.h"
 
 void init(void) 
 {
-    memset(ont_records, 0, sizeof(struct Ont_records)*NUM_OF_ONT_CONNECTIONS);
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
+    {
+        list__init(ont_records[i]);
+    }
 }
 
 void close_dll(void) 
@@ -21,10 +25,12 @@ Ont_records* get_map(
     {
         return NULL;
     }
+    
     if  (  num_ont < 0
         || num_ont >= NUM_OF_ONT_ON_PORT)
     {
         return NULL;
     }
+
     return &ont_records[get_index(num_port, num_ont)];
 }
