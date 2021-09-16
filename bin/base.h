@@ -3,7 +3,6 @@
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
 {
-
     ONT_SERIAL_NUM_SIZE = 16,  
     ONT_EQ_ID_SIZE = 18,          
     ONT_FW_VERSION_SIZE = 32
