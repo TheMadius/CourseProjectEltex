@@ -43,4 +43,5 @@ void add_new_element(Ont_info *ont_info)
 
     list__add_element(ont_connection, &ont_records[index]);
 
+    free(ont_connection);
 }
