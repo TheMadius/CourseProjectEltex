@@ -1,6 +1,3 @@
-#ifndef BASE_H
-#define BASE_H
-
 #include <time.h>
 #include <string.h>
 
@@ -64,14 +61,6 @@ typedef struct Ont_records
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS];
 
-/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
-int get_index(
-    int num_port, 
-    int num_ont);
-    
-/// Добавление нового события в базовую структуру
-void add_new_element(Ont_info *ont_info);
-
 /// Инициализация библиотеки
 void init(void);
 
@@ -82,5 +71,3 @@ void close_dll(void);
 Ont_records* get_map(
     int num_port, 
     int num_ont);
-
-#endif
