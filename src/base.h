@@ -1,5 +1,6 @@
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
@@ -54,6 +55,7 @@ typedef struct Ont_info
 /// Структура для хранения событий
 typedef struct Ont_records
 {
+    bool is_close;
     int cur_index_of_event; 
     struct Ont_connection ont_connection[NUM_OF_RECORDS];
 } Ont_records;
