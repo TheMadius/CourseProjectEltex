@@ -4,9 +4,21 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+void list__init(Ont_records *list)
+{
+    if(NULL == list)
+    {
+        return;
+    }
+
+    list->is_close = false;
+    list->cur_index_of_event = 0;
+}
+
 void list__add_element(
-    Ont_connection* element,
-    Ont_records* list)
+    Ont_connection *element,
+    Ont_records *list)
 {   
     if(NULL == element
         || NULL == list)
@@ -16,7 +28,7 @@ void list__add_element(
 
     if(list->is_close)
     {
-        //pass
+        list__init(list);
     }
 
     strcpy(list->ont_connection[list->cur_index_of_event].eq_id,
