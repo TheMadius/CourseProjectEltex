@@ -6,7 +6,7 @@ void init(void)
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
-        list__init(ont_records[i]);
+        list__init(&ont_records[i]);
     }
 }
 
