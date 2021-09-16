@@ -1,18 +1,21 @@
- #include <time.h>
+#include <time.h>
+#include <string.h>
 
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
 {
     ONT_SERIAL_NUM_SIZE = 16,  
     ONT_EQ_ID_SIZE = 18,          
-    ONT_FW_VERSION_SIZE = 32
+    ONT_FW_VERSION_SIZE = 32,
 } Ont_connection_fields_sizes;
 
 /// Константы для обозначения количества элементов базовой структуры
 typedef enum Based_structure_elements_num
 {
+    NUM_OF_PORTS = 16,
+    NUM_OF_ONT_ON_PORT = 128,
     NUM_OF_RECORDS = 10,
-    NUM_OF_ONT_CONNECTIONS = 2048
+    NUM_OF_ONT_CONNECTIONS = 2048,
 } Based_structure_elements_num;
 
 /// Константы для обозначения ONT состояний
@@ -20,7 +23,7 @@ typedef enum Ont_status
 {
     ACTIVATION = 0, 
     WORKING,   
-    CFGFAIL     
+    CFGFAIL,       
 }   Ont_status;
 
 /// Структура ONT событий
@@ -46,15 +49,22 @@ typedef struct Ont_info
     time_t link_up;    
     time_t link_down;   
     enum Ont_status status; 
-} Ont_input_info;
+} Ont_info;
 
 /// Структура для хранения событий
 typedef struct Ont_records
 {
     int cur_index_of_event; 
-    struct Ont_connection records[NUM_OF_RECORDS];
+    struct Ont_connection ont_connection[NUM_OF_RECORDS];
 } Ont_records;
 
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS];
 
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
+int get_index(
+    int num_port, 
+    int num_ont);
+    
+/// Добавление нового события в базовую структуру
+void add_new_element(Ont_info *ont_info);
