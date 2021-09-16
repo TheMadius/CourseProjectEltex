@@ -48,6 +48,7 @@ void list__add_element(
     }
 
     list->cur_index_of_event++;
+    list->cur_index_of_event = ist->cur_index_of_event % NUM_OF_RECORDS ;
 }
 
 
