@@ -42,7 +42,7 @@ void list__add_element(
     list->ont_connection[list->cur_index_of_event].link_up = element->link_up;
     list->ont_connection[list->cur_index_of_event].status = element->status;
 
-    if(0 == element->link_up)
+    if(0 == element->link_down)
     {
         list->is_close = true;
     }
