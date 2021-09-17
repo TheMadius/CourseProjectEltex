@@ -3,7 +3,7 @@ build: base.o init.o list.o
 base.o:
 	gcc -fPIC -c ./src/base.c
 init.o:
-		gcc -fPIC -c ./src/init.c
+	gcc -fPIC -c ./src/init.c
 list.o:
 	gcc -fPIC -c ./src/list.c
 clean: 
