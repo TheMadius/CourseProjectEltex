@@ -36,6 +36,40 @@ Ont_records* get_map(
     return &ont_records[get_index(num_port, num_ont)];
 }
 
+Ont_records* get_map_by_time(
+    time_t t1,
+    time_t t2,
+    Ont_records *new_list,
+    Ont_records *list)
+{
+    int len_list = list__get_size(list);
+
+    for(int i = 0; i < len_list; i++)
+    {
+        if(list->ont_connection[i].link_up >= t1 
+            && list->ont_connection[i].link_up <= t2)
+        {
+            list__add_element(&list->ont_connection[i], new_list);
+        }
+    }
+}
+
+Ont_records* get_map_by_status(
+    enum Ont_status status,
+    Ont_records *new_list,
+    Ont_records *list)
+{
+    int len_list = list__get_size(list);
+
+    for(int i = 0; i < len_list; i++)
+    {
+        if(list->ont_connection[i].status == status)
+        {
+            list__add_element(&list->ont_connection[i], new_list);
+        }
+    }
+}
+
 Ont_records* get_map_filter(
     int num_port,
     int num_ont,
@@ -53,13 +87,11 @@ Ont_records* get_map_filter(
     
     Ont_records *new_list = malloc(sizeof(Ont_records));
     Ont_records *list = &ont_records[get_index(num_port, num_ont)];
-    int len_list = list__get_size(list);
 
     int len = strlen(fmt);
     char *str = fmt;
 
-
-    for(;*str;str++)
+    for( ;*str;str++)
     {
         if('-' == *str)
         {
@@ -80,30 +112,17 @@ Ont_records* get_map_filter(
         str += sizeof(time_t);
         t2 = *((time_t *)str);  
 
-        for(int i = 0; i < len_list; i++)
-        {
-            if(list->ont_connection[i].link_up >= t1 
-                && list->ont_connection[i].link_up <= t2)
-            {
-                list__add_element(&list->ont_connection[i], new_list);
-            }
-        }
-        
+        get_map_by_time(t1, t2, new_list, list);
+                
     } else if ('s' == *str)
     {
         str = fmt;
         str += len + 1;
 
         enum Ont_status status = *((Ont_status *)str);
-        
-        for(int i = 0; i < len_list; i++)
-        {
-            if(list->ont_connection[i].status == status)
-            {
-                list__add_element(&list->ont_connection[i], new_list);
-            }
-        }
 
+        get_map_by_status(status,new_list,list);        
+        
     } else
     {
         return NULL;
