@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "base.h"
 #include "list.h"
 
@@ -33,4 +34,80 @@ Ont_records* get_map(
     }
 
     return &ont_records[get_index(num_port, num_ont)];
+}
+
+Ont_records* get_map_filter(
+    int num_port,
+    int num_ont,
+    char * fmt,
+    ...)
+{
+    if  (0 > num_port 
+        || NUM_OF_PORTS <= num_port
+        || NULL == fmt
+        || 0 > num_ont
+        || NUM_OF_ONT_ON_PORT <= num_ont)
+    {
+        return NULL;
+    }
+    
+    Ont_records *new_list = malloc(sizeof(Ont_records));
+    Ont_records *list = &ont_records[get_index(num_port, num_ont)];
+    int len_list = list__get_size(list);
+
+    int len = strlen(fmt);
+    char *str = fmt;
+
+
+    for(;*str;str++)
+    {
+        if('-' == *str)
+        {
+            str++;
+            break;
+        }
+    }
+
+    if('t' == *str)
+    {
+        time_t t1;
+        time_t t2;
+
+        str = fmt;
+        str += len + 1;
+
+        t1 = *((time_t *)str);
+        str += sizeof(time_t);
+        t2 = *((time_t *)str);  
+
+        for(int i = 0; i < len_list; i++)
+        {
+            if(list->ont_connection[i].link_up >= t1 
+                && list->ont_connection[i].link_up <= t2)
+            {
+                list__add_element(&list->ont_connection[i], new_list);
+            }
+        }
+        
+    } else if ('s' == *str)
+    {
+        str = fmt;
+        str += len + 1;
+
+        enum Ont_status status = *((Ont_status *)str);
+        
+        for(int i = 0; i < len_list; i++)
+        {
+            if(list->ont_connection[i].status == status)
+            {
+                list__add_element(&list->ont_connection[i], new_list);
+            }
+        }
+
+    } else
+    {
+        return NULL;
+    }
+    
+    return new_list;
 }

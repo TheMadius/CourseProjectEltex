@@ -16,6 +16,18 @@ void list__init(Ont_records *list)
     list->cur_index_of_event = 0;
 }
 
+int list__get_size(Ont_records *list)
+{
+    if(10 < list->cur_index_of_event)
+    {
+        return 10;
+    }
+    else
+    {
+        return list->cur_index_of_event;
+    }
+}
+
 void list__add_element(
     Ont_connection *element,
     Ont_records *list)
@@ -31,16 +43,16 @@ void list__add_element(
         list__init(list);
     }
 
-    strcpy(list->ont_connection[list->cur_index_of_event].eq_id,
+    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].eq_id,
             element->eq_id);
-    strcpy(list->ont_connection[list->cur_index_of_event].fw_version,
+    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].fw_version,
             element->fw_version);
-    strcpy(list->ont_connection[list->cur_index_of_event].serial,
+    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].serial,
             element->serial); 
 
-    list->ont_connection[list->cur_index_of_event].link_down = element->link_down;
-    list->ont_connection[list->cur_index_of_event].link_up = element->link_up;
-    list->ont_connection[list->cur_index_of_event].status = element->status;
+    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].link_down = element->link_down;
+    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].link_up = element->link_up;
+    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].status = element->status;
 
     if(0 == element->link_down)
     {
@@ -48,7 +60,7 @@ void list__add_element(
     }
 
     list->cur_index_of_event++;
-    list->cur_index_of_event = ist->cur_index_of_event % NUM_OF_RECORDS ;
+
 }
 
 
