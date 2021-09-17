@@ -13,7 +13,10 @@ void init(void)
 
 void close_dll(void) 
 {
-    // Пока нечего очищать
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
+    {
+        list__init(&ont_records[i]);
+    }
 }
 
 // Функция получения карточек по одной ONT
@@ -120,7 +123,6 @@ Ont_records* get_map_filter(
         str += len + 1;
 
         enum Ont_status status = *((Ont_status *)str);
-
         get_map_by_status(status,new_list,list);        
         
     } else
