@@ -1,65 +1,68 @@
 #include "list.h"
-#include "base.h"
+#include "ont.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
-
-void list__init(Ont_records *list)
+int list__init(Ont_records *const list)
 {
     if(NULL == list)
     {
-        return;
+        return LIST_NULL_ERROR;
     }
 
-    list->is_close = false;
     list->cur_index_of_event = 0;
+    list->count_element = 0;
 }
 
-int list__get_size(Ont_records *list)
+static int list__get_size(struct Ont_records *const list)
 {
-    if(10 < list->cur_index_of_event)
+    if(NULL == list)
     {
-        return 10;
+        return LIST_NULL_ERROR;
     }
-    else
-    {
-        return list->cur_index_of_event;
-    }
+
+    return ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
 }
 
-void list__add_element(
-    Ont_connection *element,
-    Ont_records *list)
+int list__add_element(
+    struct Ont_connection *const element,
+    struct Ont_records *const list)
 {   
-    if(NULL == element
-        || NULL == list)
+    int errno = NO_ERROR;
+
+    if(NULL == element)
     {
-        return;
+        errno = VALUE_NULL_ERROR;
+        goto end_function;
     }
 
-    if(list->is_close)
+    if(NULL == list)
     {
-        list__init(list);
+        errno = LIST_NULL_ERROR;
+        goto end_function;
     }
 
-    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].eq_id,
-            element->eq_id);
-    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].fw_version,
-            element->fw_version);
-    strcpy(list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].serial,
-            element->serial); 
+    int index_add = list->cur_index_of_event; 
 
-    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].link_down = element->link_down;
-    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].link_up = element->link_up;
-    list->ont_connection[list->cur_index_of_event % NUM_OF_RECORDS ].status = element->status;
+    strncpy(list->ont_connection[index_add].eq_id,
+            element->eq_id, ONT_EQ_ID_SIZE);
+    strncpy(list->ont_connection[index_add].fw_version,
+            element->fw_version, ONT_FW_VERSION_SIZE);
+    strncpy(list->ont_connection[index_add].serial,
+            element->serial, ONT_SERIAL_NUM_SIZE);
 
-    if(0 == element->link_down)
-    {
-        list->is_close = true;
-    }
+    list->ont_connection[index_add].link_down = element->link_down;
+    list->ont_connection[index_add].link_up = element->link_up;
+    list->ont_connection[index_add].status = element->status;
 
     list->cur_index_of_event++;
+    list->count_element++;
+
+    list->cur_index_of_event %= NUM_OF_RECORDS;
+
+     end_function:
+
+    return error;
 
 }
 

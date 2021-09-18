@@ -58,8 +58,8 @@ typedef struct Ont_info
 /// Структура для хранения событий
 typedef struct Ont_records
 {
-    bool is_close;
-    int cur_index_of_event;
+    uint32_t cur_index_of_event;
+    uint32_t count_element;
     struct Ont_connection ont_connection[NUM_OF_RECORDS];
 } Ont_records;
 

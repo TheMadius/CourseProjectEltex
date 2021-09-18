@@ -3,12 +3,20 @@
 
 #include "ont.h"
 
-void list__add_element(
-    Ont_connection *element,
-    Ont_records *list);
+///Коды ошибок
+typedef enum Error_list
+{
+    NO_ERROR = 0,
+    VALUE_NULL_ERROR = -1,
+    LIST_NULL_ERROR = -2,
+} Error_list;
 
-int list__get_size(Ont_records *list);
+int list__add_element(
+    struct Ont_connection *const element,
+    struct Ont_records *const list);
 
-void list__init(Ont_records *list);
+static int list__get_size(Ont_records *const list);
+
+int list__init(Ont_records *const list);
 
 #endif
