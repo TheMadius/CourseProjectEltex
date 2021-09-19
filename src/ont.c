@@ -168,7 +168,7 @@ int get_card_filter(
     enum Card_filter filter)
 {
     int error = NO_ERRORS;
-    int index = 0;
+    unsigned int index = 0;
     struct Ont_records records = {0};
 
     error = ont__get_index(num_port, num_ont, &index);
