@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -std=c99
+CFLAGS=-fPIC -Wall -std=c99
 LDFLAGS=-shared -nostdlib
 PATHSO="../bin/libontconnection.so"
 SOURCES=ont.c
