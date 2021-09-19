@@ -1,7 +1,6 @@
 #include "ont.h"
 #include "list.h"
 
-<<<<<<< HEAD
 void ont__init(void) 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
@@ -18,14 +17,6 @@ void ont__close(void)
     }
 }
 
-/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
-int get_index(
-    int num_port, 
-    int num_ont
-    )
-=======
-
-
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
@@ -40,7 +31,7 @@ int ont__get_index(
     unsigned int const num_port, 
     unsigned int const num_ont,
     unsigned int *const index)
->>>>>>> 3e5f37c83ca6a272fb10dfacc3ff66804ace696d
+
 {
     enum Errors errors = NO_ERRORS;
     bool is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
