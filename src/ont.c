@@ -1,19 +1,24 @@
 #include "ont.h"
 
+///Функция сравнения 2 статусов
 static bool find_status(
                     const struct Ont_connection * ont,
                     const enum Ont_status * status);
 
+///Функция сравнения времени 
 static bool find_time(
                     const struct Ont_connection * ont,
                     const time_t * time);
 
+///Добавление нового элемента в список
 static int list__add_element(
     struct Ont_connection *const element,
     struct Ont_records *const list);
 
+///Определить количество элементов списка
 static int list__get_size(struct Ont_records *const list);
 
+///Инициализация списка 
 static int list__init(struct Ont_records *const list);
 
 /// Базовая структура для хранения информации об ONT соединений
