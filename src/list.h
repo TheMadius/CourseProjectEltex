@@ -15,8 +15,8 @@ int list__add_element(
     struct Ont_connection *const element,
     struct Ont_records *const list);
 
-static int list__get_size(Ont_records *const list);
+static int list__get_size(struct Ont_records *const list);
 
-int list__init(Ont_records *const list);
+int list__init(struct Ont_records *const list);
 
 #endif

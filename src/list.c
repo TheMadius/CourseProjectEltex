@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int list__init(Ont_records *const list)
+int list__init(struct Ont_records *const list)
 {
     if(NULL == list)
     {
@@ -39,7 +39,7 @@ int list__add_element(
     if(NULL == list)
     {
         errno = LIST_NULL_ERROR;
-        goto end_function;
+        goto finally;
     }
 
     int index_add = list->cur_index_of_event; 
@@ -56,11 +56,13 @@ int list__add_element(
     list->ont_connection[index_add].status = element->status;
 
     list->cur_index_of_event++;
+    
     list->count_element++;
+    list->count_element = list__get_size(list);
 
     list->cur_index_of_event %= NUM_OF_RECORDS;
 
-     end_function:
+     finally:
 
     return error;
 
