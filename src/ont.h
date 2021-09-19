@@ -83,12 +83,6 @@ typedef struct Ont_records
     struct Ont_connection ont_connection[NUM_OF_RECORDS];
 } Ont_records;
 
-/// Инициализация библиотеки
-void ont__init(void);
-
-/// Деинициализация библиотеки
-void ont__close(void);
-
 /// Функция получения карточки по одной ONT
 int get_card(
     unsigned int const num_port,
