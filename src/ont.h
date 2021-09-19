@@ -109,8 +109,8 @@ int ont__add_element(struct Ont_info const *const ont_info);
 int get_card_filter(
     uint32_t const num_port,
     uint32_t const num_ont,
-    struct Ont_connection * const ont_connection,
     void *const key,
+    struct Ont_connection * const ont_connection,
     enum Card_filter filter);
 
 int list__add_element(
