@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-fPIC -Wall -std=c99
-LDFLAGS=-L../include -ltap -Wl,-rpath,$(pwd)/../include
+LDFLAGS=-L../include -ltap -Wl,-rpath,$(PWD)/../include
 SOURCES=test.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=test
