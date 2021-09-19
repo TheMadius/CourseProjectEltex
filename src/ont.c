@@ -66,7 +66,7 @@ int ont__add_card(struct Ont_info const *const ont_info)
         goto finally;
     }
 
-    errors = get_index(ont_info->num_port, ont_info->num_ont, &index);
+    errors = ont__get_index(ont_info->num_port, ont_info->num_ont, &index);
 
     if (errors < 0)
     {
