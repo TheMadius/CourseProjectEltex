@@ -1,6 +1,9 @@
 #include "ont.h"
 #include "list.h"
 
+/// Базовая структура для хранения информации об ONT соединений
+static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
+
 void ont__init(void) 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
@@ -16,9 +19,6 @@ void ont__close(void)
         list__init(&ont_records[i]);
     }
 }
-
-/// Базовая структура для хранения информации об ONT соединений
-static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
 /** Функция вычисления уникального индекса для индексации внутри базовой структуры.
  * 
