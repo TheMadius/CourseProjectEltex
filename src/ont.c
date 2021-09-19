@@ -57,7 +57,7 @@ int ont__get_index(
 int ont__add_card(struct Ont_info const *const ont_info)
 {
     enum Errors errors = NO_ERRORS;
-    unsigned int index;
+    unsigned int index = 0;
     struct Ont_connection ont_connection = {0};
 
     if (NULL == ont_info)
