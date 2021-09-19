@@ -1,7 +1,6 @@
 CC=gcc
 CFLAGS=-fPIC -Wall -std=c99
-LDFLAGS=-L../include -ltap -Wl,-rpath,/home/madius/CourseProjectEltex/include
-PATHSO="../bin/libontconnection.so"
+LDFLAGS=-L../include -ltap -Wl,-rpath,$(pwd)/../include
 SOURCES=test.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=test
