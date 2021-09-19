@@ -5,10 +5,19 @@
 #include <string.h>
 #include <stdbool.h>
 
+/// Константы для обозначения ошибок
+typedef enum Errors
+{
+    NO_ERRORS = 0,
+    NUM_PORT_ERROR = -1,
+    NUM_ONT_ERROR = -2,
+    NULL_PTR_ERROR = -3,
+} Errors;
+
 /// Константы для обозначения размеров полей структы Ont
 typedef enum Ont_connection_fields_sizes
 {
-    ONT_SERIAL_NUM_SIZE = 16,
+    ONT_SERIAL_SIZE = 16,
     ONT_EQ_ID_SIZE = 18,
     ONT_FW_VERSION_SIZE = 32,
 } Ont_connection_fields_sizes;
@@ -33,7 +42,7 @@ typedef enum Ont_status
 /// Структура ONT событий
 typedef struct Ont_connection
 {
-    char serial[ONT_SERIAL_NUM_SIZE];  
+    char serial[ONT_SERIAL_SIZE];  
     char eq_id[ONT_EQ_ID_SIZE];
     char fw_version[ONT_FW_VERSION_SIZE];
     time_t link_up;
@@ -47,7 +56,7 @@ typedef struct Ont_info
 {
     int num_port;
     int num_ont;
-    char serial[ONT_SERIAL_NUM_SIZE];  
+    char serial[ONT_SERIAL_SIZE];  
     char eq_id[ONT_EQ_ID_SIZE];
     char fw_version[ONT_FW_VERSION_SIZE];
     time_t link_up;
@@ -64,22 +73,25 @@ typedef struct Ont_records
 } Ont_records;
 
 /// Инициализация библиотеки
-void init(void);
+void ont__init(void);
 
 /// Деинициализация библиотеки
-void close_dll(void);
+void ont__close(void);
 
 /// Функция получения карточки по одной ONT
-Ont_records* get_map(
-    int num_port,
-    int num_ont);
+int get_card(
+    unsigned int const num_port,
+    unsigned int const num_ont,
+    struct Ont_records const *const ont_record);
 
 /// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
-int get_index(
-    int num_port,
-    int num_ont);
+int ont__get_index(
+    unsigned int const num_port,
+    unsigned int const num_ont,
+    unsigned int *const index
+    );
 
 /// Добавление нового события в базовую структуру
-void add_new_element(Ont_info *ont_info);
+int ont__add_element(struct Ont_info const *const ont_info);
 
 #endif //ONT_H
