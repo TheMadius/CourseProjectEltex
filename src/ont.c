@@ -3,7 +3,7 @@
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
-void ont__init(void) 
+void _init() 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
@@ -11,7 +11,7 @@ void ont__init(void)
     }
 }
 
-void ont__close(void) 
+void _fini() 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
