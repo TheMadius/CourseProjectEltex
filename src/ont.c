@@ -1,5 +1,21 @@
 #include "ont.h"
 
+static bool find_status(
+                    const struct Ont_connection * ont,
+                    const enum Ont_status * status);
+
+static bool find_time(
+                    const struct Ont_connection * ont,
+                    const time_t * time);
+
+static int list__add_element(
+    struct Ont_connection *const element,
+    struct Ont_records *const list);
+
+static int list__get_size(struct Ont_records *const list);
+
+static int list__init(struct Ont_records *const list);
+
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
@@ -220,7 +236,7 @@ int get_card_filter(
 }
 
 
-int list__init(struct Ont_records *const list)
+static int list__init(struct Ont_records *const list)
 {
     int error = NO_ERRORS;
     if(NULL == list)
@@ -254,7 +270,7 @@ static int list__get_size(struct Ont_records *const list)
     return count;
 }
 
-int list__add_element(
+static int list__add_element(
     struct Ont_connection *const element,
     struct Ont_records *const list)
 {   
