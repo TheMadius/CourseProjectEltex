@@ -5,23 +5,36 @@
 
 int list__init(struct Ont_records *const list)
 {
+    int error = NO_ERROR;
     if(NULL == list)
     {
-        return LIST_NULL_ERROR;
+        error = LIST_NULL_ERROR;
+        goto finally;
     }
 
     list->cur_index_of_event = 0;
     list->count_element = 0;
+    
+     finally:
+    
+    return error;
 }
 
 static int list__get_size(struct Ont_records *const list)
 {
+    int count = 0;
+    
     if(NULL == list)
     {
-        return LIST_NULL_ERROR;
+        count = LIST_NULL_ERROR;
+        goto finally;
     }
-
-    return ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
+    
+    count = ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
+    
+     finally:
+    
+    return count;
 }
 
 int list__add_element(
