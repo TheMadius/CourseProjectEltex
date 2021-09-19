@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /// Константы для обозначения ошибок
 typedef enum Errors
@@ -12,6 +13,9 @@ typedef enum Errors
     NUM_PORT_ERROR = -1,
     NUM_ONT_ERROR = -2,
     NULL_PTR_ERROR = -3,
+    NOT_FOUND_ERROR = -4,
+    VALUE_NULL_ERROR = -5,
+    LIST_NULL_ERROR = -6,
 } Errors;
 
 /// Константы для обозначения размеров полей структы Ont
@@ -38,6 +42,13 @@ typedef enum Ont_status
     WORKING,
     CFGFAIL,
 }   Ont_status;
+
+/// Константы для поиска в get_card_filter
+typedef enum Card_filter
+{
+    FIND_STATUS = 0,
+    FIND_TIME,
+}  Card_filter ;
 
 /// Структура ONT событий
 typedef struct Ont_connection
@@ -82,7 +93,7 @@ void ont__close(void);
 int get_card(
     unsigned int const num_port,
     unsigned int const num_ont,
-    struct Ont_records const *const ont_record);
+    struct Ont_records *const ont_record);
 
 /// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 int ont__get_index(
@@ -93,5 +104,21 @@ int ont__get_index(
 
 /// Добавление нового события в базовую структуру
 int ont__add_element(struct Ont_info const *const ont_info);
+
+// Функция получения карточек по одной ONT с фильтром
+int get_card_filter(
+    uint32_t const num_port,
+    uint32_t const num_ont,
+    struct Ont_connection * const ont_connection,
+    void *const key,
+    enum Card_filter filter);
+
+int list__add_element(
+    struct Ont_connection *const element,
+    struct Ont_records *const list);
+
+static int list__get_size(struct Ont_records *const list);
+
+int list__init(struct Ont_records *const list);
 
 #endif //ONT_H
