@@ -1,7 +1,21 @@
 #include "ont.h"
 #include "list.h"
 
+void ont__init(void) 
+{
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
+    {
+        list__init(&ont_records[i]);
+    }
+}
 
+void ont__close(void) 
+{
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
+    {
+        list__init(&ont_records[i]);
+    }
+}
 
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
@@ -17,6 +31,7 @@ int ont__get_index(
     unsigned int const num_port, 
     unsigned int const num_ont,
     unsigned int *const index)
+
 {
     enum Errors errors = NO_ERRORS;
     bool is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
@@ -81,6 +96,28 @@ int ont__add_card(struct Ont_info const *const ont_info)
     ont_connection->status = ont_info->status;
 
     errors = list__add_element(&ont_connection, &ont_records[index]);
+
+     finally:
+    return errors;
+}
+
+// Функция получения карточек по одной ONT
+int get_card(
+    unsigned int const num_port,
+    unsigned int const num_ont,
+    struct Ont_records const *const ont_record)
+{
+    enum Errors errors = NO_ERRORS;
+    unsigned int index = 0;
+
+    errors = ont__get_index(num_port, num_ont, &index);
+
+    if (errors < 0)
+    {
+        goto finally;
+    }
+
+    ont_record = &ont_records[index];
 
      finally:
     return errors;

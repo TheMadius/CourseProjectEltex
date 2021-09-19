@@ -73,15 +73,16 @@ typedef struct Ont_records
 } Ont_records;
 
 /// Инициализация библиотеки
-void init(void);
+void ont__init(void);
 
 /// Деинициализация библиотеки
-void close_dll(void);
+void ont__close(void);
 
 /// Функция получения карточки по одной ONT
-Ont_records* get_map(
-    int num_port,
-    int num_ont);
+int get_card(
+    unsigned int const num_port,
+    unsigned int const num_ont,
+    struct Ont_records const *const ont_record);
 
 /// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 int ont__get_index(
