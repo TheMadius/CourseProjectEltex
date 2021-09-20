@@ -13,7 +13,6 @@ all: $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	mkdir -p $(PATHL)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHL)$(NAMEL)
-	cp $(HEADERS) $(PATHL)
 
 .SUFFIXES:
 .SUFFIXES: .c .o

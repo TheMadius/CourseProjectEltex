@@ -24,10 +24,8 @@ $(EXECUTABLE): $(BIN)$(LIBONT) $(OBJECTS)
 $(BIN)$(LIBONT): 
 	make -C $(SRC) -r
 	mkdir -p $(PATHINCLUDE)
-	cp $(PATHL)/libtap.so $(PATHINCLUDE) 
 	cp -r $(BIN)* $(PATHINCLUDE)
 
 clean:
-	rm -r $(PATHINCLUDE)
 	rm $(OBJECTS) $(EXECUTABLE)
 	make -C $(SRC) clean

@@ -10,6 +10,13 @@ static bool find_time(
                     const struct Ont_connection * ont,
                     const time_t * time);
 
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
+static int ont__get_index(
+    unsigned int const num_port,
+    unsigned int const num_ont,
+    unsigned int *const index
+    );
+
 ///Добавление нового элемента в список
 static int list__add_element(
     struct Ont_connection *const element,
@@ -77,7 +84,7 @@ int ont__get_index(
 
     *index = num_port * NUM_OF_ONT_ON_PORT + num_ont;
 
-     finally:
+ finally:
     return errors;
 }
 
@@ -117,7 +124,7 @@ int ont__add_card(struct Ont_info const *const ont_info)
 
     errors = list__add_element(&ont_connection, &ont_records[index]);
 
-     finally:
+ finally:
     return errors;
 }
 
@@ -139,7 +146,7 @@ int get_card(
 
     *ont_record = ont_records[index];
 
-     finally:
+ finally:
     return errors;
 }
 
@@ -161,21 +168,21 @@ void* find(
         }
         base += size;
     }
-     finally:
+ finally:
 
     return result;
 }
 
 static bool find_status(
-                    const struct Ont_connection * ont,
-                    const enum Ont_status * status)
+                    struct Ont_connection const *const ont,
+                    enum Ont_status const *const status)
 {
     return ont->status == *status;
 }
 
 static bool find_time(
-                    const struct Ont_connection * ont,
-                    const time_t * time)
+                    const struct Ont_connection *const ont,
+                    const time_t *const time)
 {
     return ont->link_up >= *time;
 }
@@ -235,7 +242,7 @@ int get_card_filter(
         }
     }
     
-     finally:
+ finally:
 
     return error;
 }
@@ -253,7 +260,7 @@ static int list__init(struct Ont_records *const list)
     list->cur_index_of_event = 0;
     list->count_element = 0;
     
-     finally:
+ finally:
     
     return error;
 }
@@ -270,7 +277,7 @@ static int list__get_size(struct Ont_records *const list)
     
     count = ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
     
-     finally:
+ finally:
     
     return count;
 }
@@ -313,7 +320,7 @@ static int list__add_element(
 
     list->cur_index_of_event %= NUM_OF_RECORDS;
 
-     finally:
+ finally:
 
     return error;
 
