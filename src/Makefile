@@ -1,7 +1,8 @@
 CC=gcc
 CFLAGS=-fPIC -Wall -std=c99
 LDFLAGS=-shared -nostdlib
-PATHSO="../bin/lib/libontconnection.so"
+PATHL=../bin/
+NAMEL=libontconnection.so
 SOURCES=ont.c
 HEADERS=ont.h
 OBJECTS=$(SOURCES:.c=.o)
@@ -10,10 +11,9 @@ EXECUTABLE=libontconnection.so
 all: $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS)
-	mkdir -p ../bin/include
-	mkdir -p ../bin/lib
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHSO)
-	cp $(HEADERS) ../bin/include
+	mkdir -p $(PATHL)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHL)$(NAMEL)
+	cp $(HEADERS) $(PATHL)
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -25,5 +25,5 @@ $(SRCS): $(HEADERS)
 	@touch $@
 
 clean:
-	rm ont.o
-	rm -r ../bin
+	rm $(OBJECTS)
+	rm -r $(PATHL)
