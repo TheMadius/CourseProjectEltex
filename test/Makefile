@@ -1,21 +1,18 @@
 CC=gcc
 SRC=../src
-PATHL=$(PWD)/../include=
+PATHL=$(PWD)/../include
 BIN=../bin/
 LIBONT=libontconnection.so
 CFLAGS=-fPIC -Wall -std=c99
-LDFLAGS=-L../include -ltap -Wl,-rpath,$(PATHINCLUDE)
 PATHINCLUDE=include
+LDFLAGS=-L./$(PATHINCLUDE) -lontconnection -ltap -Wl,-rpath,$(PATHINCLUDE)
 SOURCES=test.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=test
 
 all: $(EXECUTABLE) 
 	
-$(EXECUTABLE): $(OBJECTS) $(BIN)$(LIBONT)
-	mkdir -p $(PATHINCLUDE)
-	cp $(PATHL)/libtap.so $(PATHINCLUDE) 
-	cp -r $(BIN)* $(PATHINCLUDE)
+$(EXECUTABLE): $(BIN)$(LIBONT) $(OBJECTS) 
 	$(CC) $(OBJECTS) -o $(EXECUTABLE) $(LDFLAGS)
 
 .SUFFIXES:
@@ -26,6 +23,9 @@ $(EXECUTABLE): $(OBJECTS) $(BIN)$(LIBONT)
 
 $(BIN)$(LIBONT): 
 	make -C $(SRC) -r
+	mkdir -p $(PATHINCLUDE)
+	cp $(PATHL)/libtap.so $(PATHINCLUDE) 
+	cp -r $(BIN)* $(PATHINCLUDE)
 
 clean:
 	rm -r $(PATHINCLUDE)
