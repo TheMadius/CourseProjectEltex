@@ -5,12 +5,12 @@ static bool find_status(
                     const struct Ont_connection * ont,
                     const enum Ont_status * status);
 
-///Функция сравнения времени
+///Функция сравнения времени 
 static bool find_time(
                     const struct Ont_connection * ont,
                     const time_t * time);
 
-/// Функция рассчитывает уникальный индекс для индексации внутри базовой структуры 
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 static int ont__get_index(
     unsigned int const num_port,
     unsigned int const num_ont,
@@ -27,7 +27,7 @@ static int list__get_size(
     struct Ont_records *const list,
     uint32_t *const count);
 
-///Инициализация списка
+///Инициализация списка 
 static int list__init(struct Ont_records *const list);
 
 /// Базовая структура для хранения информации об ONT соединений
@@ -58,7 +58,7 @@ static void* find(
 __attribute((constructor))
 static void _init(void) 
 {
-    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++)
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
     }
@@ -67,7 +67,7 @@ static void _init(void)
 __attribute__((destructor))
 static void _fini(void) 
 {
-    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++)
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
     }
@@ -78,16 +78,16 @@ static void _fini(void)
  * При успешном вычислении, функция возвращает NO_ERRORS и инициализирует
  * значение указателя index, вычисленным индексом.
  * 
- * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
+
 static int ont__get_index(
     unsigned int const num_port, 
     unsigned int const num_ont,
     unsigned int *const index)
-
 {
     enum Errors errors = NO_ERRORS;
-
+  
     if (NULL == index)
     {
         errors = NULL_PTR_ERROR;
@@ -102,11 +102,11 @@ static int ont__get_index(
 
 /** Функция добавления нового события в базовую структуру
  * 
- * При успешном добавлении, функция возвращает NO_ERRORS и
+ * При успешном добавлении, функция возвращает NO_ERRORS и 
  * новое событие сохранено в базовой структуре, в соответствущем
  * для него месте в структуре.
  * 
- * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
 int ont__add_card(struct Ont_info const *const ont_info)
 {
@@ -141,6 +141,7 @@ int ont__add_card(struct Ont_info const *const ont_info)
 }
 
 // Функция получения карточек по одной ONT
+
 int ont__get_card(
     uint32_t const num_port,
     uint32_t const num_ont,
@@ -156,10 +157,7 @@ int ont__get_card(
         goto finally;
     }
 
-    for(int i = 0; i < NUM_OF_RECORDS; i++)
-    {
-        ont_connection [i] = ont_records[index].ont_connection [i];
-    }
+    *ont_record = ont_records[index];
 
  finally:
     return errors;
@@ -174,8 +172,8 @@ static void* find(
     bool (*compare)(const void *, const void *))
 {
     void *result = NULL;
-    for(size_t i = 0; i < num; i++)
 
+    for(size_t i = 0; i < num; i++)
     {
         if(compare(base, key))
         {
