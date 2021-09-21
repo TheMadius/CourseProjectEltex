@@ -41,7 +41,6 @@ static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
  * 
  * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
-int ont__add_card(struct Ont_info const *const ont_info);
 
 __attribute__((constructor))
 static void _init(void);
