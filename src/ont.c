@@ -23,7 +23,9 @@ static int list__add_element(
     struct Ont_records *const list);
 
 ///Определить количество элементов списка
-static int list__get_size(struct Ont_records *const list);
+static int list__get_size(
+    struct Ont_records *const list,
+    uint32_t *const count);
 
 ///Инициализация списка 
 static int list__init(struct Ont_records *const list);
@@ -31,7 +33,30 @@ static int list__init(struct Ont_records *const list);
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
-void _init() 
+/** Функция добавления нового события в базовую структуру
+ * 
+ * При успешном добавлении, функция возвращает NO_ERRORS и 
+ * новое событие сохранено в базовой структуре, в соответствущем
+ * для него месте в структуре.
+ * 
+ * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
+*/
+
+__attribute__((constructor))
+static void _init(void);
+
+__attribute__((destructor))
+static void _fini(void);
+
+static void* find(
+    void *base,
+    void *const key,
+    size_t num,
+    size_t size,
+    bool (*compare)(const void *, const void *));
+
+__attribute((constructor))
+static void _init(void) 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
@@ -39,7 +64,8 @@ void _init()
     }
 }
 
-void _fini() 
+__attribute__((destructor))
+static void _fini(void) 
 {
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
@@ -54,28 +80,14 @@ void _fini()
  * 
  * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
-int ont__get_index(
+
+static int ont__get_index(
     unsigned int const num_port, 
     unsigned int const num_ont,
     unsigned int *const index)
-
 {
     enum Errors errors = NO_ERRORS;
-    bool is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
-    bool is_num_ont_in_range = (num_ont < 0) || (num_ont >= NUM_OF_ONT_ON_PORT);
-
-    if (is_num_port_in_range)
-    {
-        errors = NUM_PORT_ERROR;
-        goto finally;
-    }
-    
-    if (is_num_ont_in_range)
-    {
-        errors = NUM_ONT_ERROR;
-        goto finally;
-    }
-
+  
     if (NULL == index)
     {
         errors = NULL_PTR_ERROR;
@@ -129,10 +141,11 @@ int ont__add_card(struct Ont_info const *const ont_info)
 }
 
 // Функция получения карточек по одной ONT
-int get_card(
-    unsigned int const num_port,
-    unsigned int const num_ont,
-    struct Ont_records *const ont_record)
+
+int ont__get_card(
+    uint32_t const num_port,
+    uint32_t const num_ont,
+    struct Ont_connection ont_connection[NUM_OF_RECORDS])
 {
     enum Errors errors = NO_ERRORS;
     unsigned int index = 0;
@@ -151,7 +164,7 @@ int get_card(
 }
 
 
-void* find(
+static void* find(
     void *base,
     void *const key,
     size_t num,
@@ -159,14 +172,16 @@ void* find(
     bool (*compare)(const void *, const void *))
 {
     void *result = NULL;
-    for(int i = 0; i < num; i++)
+
+    for(size_t i = 0; i < num; i++)
     {
         if(compare(base, key))
         {
             result = base;
             goto finally;
         }
-        base += size;
+
+        base = (char*)base + size;
     }
  finally:
 
@@ -265,21 +280,29 @@ static int list__init(struct Ont_records *const list)
     return error;
 }
 
-static int list__get_size(struct Ont_records *const list)
+static int list__get_size(
+    struct Ont_records *const list,
+    uint32_t *const count)
 {
-    int count = 0;
-    
+    int error = NO_ERRORS;
+
     if(NULL == list)
     {
-        count = LIST_NULL_ERROR;
+        error = LIST_NULL_ERROR;
+        goto finally;
+    }
+
+    if(NULL == count)
+    {
+        error = NULL_PTR_ERROR;
         goto finally;
     }
     
-    count = ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
+    *count = ( NUM_OF_RECORDS < list->count_element) ? NUM_OF_RECORDS : list->count_element;
     
  finally:
     
-    return count;
+    return error;
 }
 
 static int list__add_element(
@@ -287,6 +310,7 @@ static int list__add_element(
     struct Ont_records *const list)
 {   
     int error = NO_ERRORS;
+    uint32_t index_add = 0;
 
     if(NULL == element)
     {
@@ -300,7 +324,7 @@ static int list__add_element(
         goto finally;
     }
 
-    int index_add = list->cur_index_of_event; 
+    index_add = list->cur_index_of_event; 
 
     strncpy(list->ont_connection[index_add].eq_id,
             element->eq_id, ONT_EQ_ID_SIZE);
@@ -316,7 +340,13 @@ static int list__add_element(
     list->cur_index_of_event++;
     
     list->count_element++;
-    list->count_element = list__get_size(list); 
+    error = list__get_size(list, &(list->count_element)); 
+
+    if(0 > error)
+    {
+        error = NULL_PTR_ERROR;
+        goto finally;
+    }
 
     list->cur_index_of_event %= NUM_OF_RECORDS;
 
