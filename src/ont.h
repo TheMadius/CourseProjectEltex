@@ -84,10 +84,10 @@ typedef struct Ont_records
 } Ont_records;
 
 /// Функция получения карточки по одной ONT
-int get_card(
+int ont__get_card(
     unsigned int const num_port,
     unsigned int const num_ont,
-    struct Ont_records *const ont_record);
+    struct Ont_connection ont_connection [NUM_OF_RECORDS];
 
 /// Добавление нового события в базовую структуру
 int ont__add_element(struct Ont_info const *const ont_info);

@@ -129,10 +129,10 @@ int ont__add_card(struct Ont_info const *const ont_info)
 }
 
 // Функция получения карточек по одной ONT
-int get_card(
+int ont__get_card(
     unsigned int const num_port,
     unsigned int const num_ont,
-    struct Ont_records *const ont_record)
+    struct Ont_connection *const one_ont_connection)
 {
     enum Errors errors = NO_ERRORS;
     unsigned int index = 0;
@@ -144,7 +144,7 @@ int get_card(
         goto finally;
     }
 
-    *ont_record = ont_records[index];
+    *one_ont_connection = one_ont_connection[index];
 
  finally:
     return errors;
