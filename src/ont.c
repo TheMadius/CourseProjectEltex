@@ -157,8 +157,10 @@ int ont__get_card(
         goto finally;
     }
 
-    *ont_record = ont_records[index];
-
+    for(size_t i = 0; i < NUM_OF_RECORDS; i++)
+    {
+        ont_connection [i] = ont_records[index].ont_connection [i];
+    }
  finally:
     return errors;
 }
