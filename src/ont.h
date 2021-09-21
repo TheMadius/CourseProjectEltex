@@ -90,7 +90,7 @@ int ont__get_card(
     struct Ont_records *const ont_record);
 
 /// Добавление нового события в базовую структуру
-int ont__add_element(struct Ont_info const *const ont_info);
+int ont__add_card(struct Ont_info const *const ont_info);
 
 // Функция получения карточек по одной ONT с фильтром
 int get_card_filter(
