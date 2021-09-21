@@ -16,6 +16,7 @@ typedef enum Errors
     NOT_FOUND_ERROR = -4,
     VALUE_NULL_ERROR = -5,
     LIST_NULL_ERROR = -6,
+    WRONG_VALUE_ERROR = -7,
 } Errors;
 
 /// Константы для обозначения размеров полей структы Ont
