@@ -65,8 +65,8 @@ typedef struct Ont_connection
 /// Структура с данными об ONT, которая поступает извне
 typedef struct Ont_info
 {
-    int num_port;
-    int num_ont;
+    uint32_t num_port;
+    uint32_t num_ont;
     char serial[ONT_SERIAL_SIZE];  
     char eq_id[ONT_EQ_ID_SIZE];
     char fw_version[ONT_FW_VERSION_SIZE];
@@ -84,9 +84,9 @@ typedef struct Ont_records
 } Ont_records;
 
 /// Функция получения карточки по одной ONT
-int get_card(
-    unsigned int const num_port,
-    unsigned int const num_ont,
+int ont__get_card(
+    uint32_t const num_port,
+    uint32_t const num_ont,
     struct Ont_records *const ont_record);
 
 /// Добавление нового события в базовую структуру

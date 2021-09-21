@@ -1,6 +1,6 @@
 CC=gcc
 SRC=../src
-PATHL=$(PWD)/../include
+PATHL=../include/
 BIN=../bin/
 LIBONT=libontconnection.so
 CFLAGS=-fPIC -Wall -std=c99
@@ -25,6 +25,7 @@ $(BIN)$(LIBONT):
 	make -C $(SRC) -r
 	mkdir -p $(PATHINCLUDE)
 	cp -r $(BIN)* $(PATHINCLUDE)
+	cp -r $(PATHL)* $(PATHINCLUDE)
 
 clean:
 	rm $(OBJECTS) $(EXECUTABLE)
