@@ -5,12 +5,12 @@ static bool find_status(
                     const struct Ont_connection * ont,
                     const enum Ont_status * status);
 
-///Функция сравнения времени
+///Функция сравнения времени 
 static bool find_time(
                     const struct Ont_connection * ont,
                     const time_t * time);
 
-/// Функция рассчитывает уникальный индекс для индексации внутри базовой структуры 
+/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
 static int ont__get_index(
     unsigned int const num_port,
     unsigned int const num_ont,
@@ -25,23 +25,23 @@ static int list__add_element(
 ///Определить количество элементов списка
 static int list__get_size(struct Ont_records *const list);
 
-///Инициализация списка
+///Инициализация списка 
 static int list__init(struct Ont_records *const list);
 
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
-void _init()
+void _init() 
 {
-    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++)
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
     }
 }
 
-void _fini()
+void _fini() 
 {
-    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++)
+    for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
     }
@@ -52,17 +52,17 @@ void _fini()
  * При успешном вычислении, функция возвращает NO_ERRORS и инициализирует
  * значение указателя index, вычисленным индексом.
  * 
- * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
 int ont__get_index(
-    unsigned int const num_port,
+    unsigned int const num_port, 
     unsigned int const num_ont,
     unsigned int *const index)
 
 {
     enum Errors errors = NO_ERRORS;
-    bool const is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
-    bool const is_num_ont_in_range = (num_ont < 0) || (num_ont >= NUM_OF_ONT_ON_PORT);
+    bool is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
+    bool is_num_ont_in_range = (num_ont < 0) || (num_ont >= NUM_OF_ONT_ON_PORT);
 
     if (is_num_port_in_range)
     {
@@ -90,11 +90,11 @@ int ont__get_index(
 
 /** Функция добавления нового события в базовую структуру
  * 
- * При успешном добавлении, функция возвращает NO_ERRORS и
+ * При успешном добавлении, функция возвращает NO_ERRORS и 
  * новое событие сохранено в базовой структуре, в соответствущем
  * для него месте в структуре.
  * 
- * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
 */
 int ont__add_card(struct Ont_info const *const ont_info)
 {
@@ -129,10 +129,10 @@ int ont__add_card(struct Ont_info const *const ont_info)
 }
 
 // Функция получения карточек по одной ONT
-int ont__get_card(
+int get_card(
     unsigned int const num_port,
     unsigned int const num_ont,
-    struct Ont_connection ont_connection[NUM_OF_RECORDS])
+    struct Ont_records *const ont_record)
 {
     enum Errors errors = NO_ERRORS;
     unsigned int index = 0;
@@ -144,10 +144,7 @@ int ont__get_card(
         goto finally;
     }
 
-    for(int i = 0; i < NUM_OF_RECORDS; i++)
-    {
-        ont_connection [i] = ont_records[index].ont_connection [i];
-    }
+    *ont_record = ont_records[index];
 
  finally:
     return errors;
@@ -161,7 +158,7 @@ void* find(
     size_t size,
     bool (*compare)(const void *, const void *))
 {
-    void *result = NULL;    
+    void *result = NULL;
     for(int i = 0; i < num; i++)
     {
         if(compare(base, key))
