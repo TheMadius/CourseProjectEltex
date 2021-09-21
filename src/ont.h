@@ -54,7 +54,7 @@ typedef enum Card_filter
 /// Структура ONT событий
 typedef struct Ont_connection
 {
-    char serial[ONT_SERIAL_SIZE];  
+    char serial[ONT_SERIAL_SIZE];
     char eq_id[ONT_EQ_ID_SIZE];
     char fw_version[ONT_FW_VERSION_SIZE];
     time_t link_up;
@@ -68,11 +68,11 @@ typedef struct Ont_info
 {
     uint32_t num_port;
     uint32_t num_ont;
-    char serial[ONT_SERIAL_SIZE];  
+    char serial[ONT_SERIAL_SIZE];
     char eq_id[ONT_EQ_ID_SIZE];
     char fw_version[ONT_FW_VERSION_SIZE];
     time_t link_up;
-    time_t link_down;   
+    time_t link_down;
     enum Ont_status status;
 } Ont_info;
 

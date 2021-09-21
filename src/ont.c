@@ -96,11 +96,13 @@ static int ont__get_index(
         goto finally;
     }
 
-    if (is_num_port_in_range) {
+    if (is_num_port_in_range)
+    {
         errors = NUM_PORT_ERROR;
         goto finally;
     }
-    if (is_num_ont_in_range) {
+    if (is_num_ont_in_range)
+    {
         errors = NUM_ONT_ERROR;
         goto finally;
     }
