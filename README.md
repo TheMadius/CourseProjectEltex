@@ -63,30 +63,35 @@
 
 - <span style="font-size: 11pt; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;">Демонстрацией работы: имитация нескольких добавлени и т.п., получение карточек и сравнение с эталоном.</span>
 - - -
-Пример:
-&nbsp; &nbsp; struct Ont_info ont_info = {0};
-&nbsp; &nbsp; enum Errors errors = NO_ERRORS;  
-<br> &nbsp; &nbsp; ont_info.num_port = 0;
-&nbsp; &nbsp; ont_info.num_ont = 0;
-&nbsp; &nbsp; strncpy(ont_info.serial, "serial0", ONT_SERIAL_SIZE);
-&nbsp; &nbsp; strncpy(ont_info.eq_id, "eq_id0", ONT_EQ_ID_SIZE);
-&nbsp; &nbsp; strncpy(ont_info.fw_version, "fw_version0", ONT_FW_VERSION_SIZE);
-
-&nbsp; &nbsp; for(size_t i = 0; i &lt; 15; i++)
-&nbsp; &nbsp; {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ont_info.link_up = i;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ont_info.status = ACTIVATION ;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;sended_cards[i].status = ont_info.status;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;errors = ont__add_card(&amp;ont_info);
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if(errors &lt; 0)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;exit(<span style="font-weight: 700;">errors</span>);
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
-&nbsp; &nbsp; }
-> 
-> **&nbsp; &nbsp;&nbsp;**
-> 
-> **&nbsp; &nbsp; errors = ont__get_card(0, 0, received_cards, 10);> ** **&nbsp; &nbsp; if(errors &lt; 0)> ** **&nbsp; &nbsp; {> ** **&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;**<span style="font-weight: 700;">exit(</span><span style="font-weight: 700;">errors</span><span style="font-weight: 700;">);</span> **> ** **&nbsp; &nbsp; }**
+> <br>Пример:
+> <br>&nbsp; &nbsp; struct Ont_info ont_info = {0};
+> <br>&nbsp; &nbsp; enum Errors errors = NO_ERRORS;  
+> <br> &nbsp; &nbsp; ont_info.num_port = 0;
+> <br>&nbsp; &nbsp; ont_info.num_ont = 0;
+> <br>&nbsp; &nbsp; strncpy(ont_info.serial, "serial0", ONT_SERIAL_SIZE);
+> <br>&nbsp; &nbsp; strncpy(ont_info.eq_id, "eq_id0", ONT_EQ_ID_SIZE);
+> <br>&nbsp; &nbsp; strncpy(ont_info.fw_version, "fw_version0", ONT_FW_VERSION_SIZE);
+> <br>
+> <br>&nbsp; &nbsp; for(size_t i = 0; i &lt; 15; i++)
+> <br>&nbsp; &nbsp; {
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ont_info.link_up = i;
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ont_info.status = ACTIVATION ;
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;sended_cards[i].status = ont_info.status;
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;errors = ont__add_card(&amp;ont_info);
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if(errors &lt; 0)
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;exit(<span style="font-weight: 700;">errors</span>);
+> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
+> <br>&nbsp; &nbsp; }
+> <br>
+> <br>&nbsp; &nbsp;&nbsp;
+> <br>
+> <br> &nbsp; &nbsp; errors = ont__get_card(0, 0, received_cards, 10);
+> <br> &nbsp; &nbsp; if(errors &lt; 0)
+> <br> &nbsp; &nbsp; {
+> <br> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+> <br> <span style="font-weight: 700;">exit(</span><span style="font-weight: 700;">errors</span><span style="font-weight: 700;">);</span> 
+> <br> &nbsp; &nbsp; }
 - - -
 ### <span style="font-weight: 700;">Функции:</span>
 #### &nbsp; **Обновление записи**:&nbsp;&nbsp;<span style="font-weight: 700;">&nbsp;</span>
