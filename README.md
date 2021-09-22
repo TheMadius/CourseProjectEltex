@@ -41,7 +41,6 @@
 
 - - -
 ### <span style="font-weight: 700;">Установка для UNIX системах:</span>
-****
 
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span style="font-weight: 700;">Собранный файл находиться в директории bin/.&nbsp;</span><span style="font-weight: 700;">API находится в include/.&nbsp;</span>**Для сборки динамической библиотеки необходимо в главной директории прописать команду:**
 >  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;make
