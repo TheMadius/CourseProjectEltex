@@ -63,10 +63,9 @@
 - <span style="font-size: 11pt; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;">Демонстрацией работы: имитация нескольких добавлени и т.п., получение карточек и сравнение с эталоном.</span>
 - - -
 ### <span style="font-weight: 700;">Пример:</span>
-<br>
 > <br>&nbsp; &nbsp; struct Ont_info ont_info = {0};
 > <br>&nbsp; &nbsp; enum Errors errors = NO_ERRORS;  
-> <br> &nbsp; &nbsp; ont_info.num_port = 0;
+> <br>&nbsp; &nbsp; ont_info.num_port = 0;
 > <br>&nbsp; &nbsp; ont_info.num_ont = 0;
 > <br>&nbsp; &nbsp; strncpy(ont_info.serial, "serial0", ONT_SERIAL_SIZE);
 > <br>&nbsp; &nbsp; strncpy(ont_info.eq_id, "eq_id0", ONT_EQ_ID_SIZE);
