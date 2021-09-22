@@ -1,10 +1,9 @@
 CC=gcc
 SRC=../src
-PATHL=../include/
 BIN=../bin/
 LIBONT=libontconnection.so
 CFLAGS=-fPIC -Wall -std=c99
-PATHINCLUDE=include
+PATHINCLUDE=./
 LDFLAGS=-L./$(PATHINCLUDE) -lontconnection -ltap -Wl,-rpath,$(PATHINCLUDE)
 SOURCES=test.c
 OBJECTS=$(SOURCES:.c=.o)
@@ -25,7 +24,6 @@ $(BIN)$(LIBONT):
 	make -C $(SRC) -r
 	mkdir -p $(PATHINCLUDE)
 	cp -r $(BIN)* $(PATHINCLUDE)
-	cp -r $(PATHL)* $(PATHINCLUDE)
 
 clean:
 	rm $(OBJECTS) $(EXECUTABLE)

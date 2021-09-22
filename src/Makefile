@@ -14,7 +14,6 @@ all: $(NAMEL)
 $(NAMEL): $(OBJECTS)
 	mkdir -p $(PATHL)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHL)$(NAMEL) $(FLAGL)
-	cp $(HEADERS) $(PATHINC)
 
 .SUFFIXES:
 .SUFFIXES: .c .o

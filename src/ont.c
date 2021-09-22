@@ -1,4 +1,4 @@
-#include "ont.h"
+#include "../include/ont.h"
 #include "pthread.h"
 
 /// Структура для хранения событий

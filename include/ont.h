@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "pthread.h"
 
 /// Константы для обозначения ошибок
 typedef enum Errors
@@ -17,7 +16,9 @@ typedef enum Errors
     NOT_FOUND_ERROR = -4,
     VALUE_NULL_ERROR = -5,
     LIST_NULL_ERROR = -6,
-    WRONG_VALUE_ERROR = -7,
+    ARRAY_SIZE_ERROR = -7,
+    WRONG_VALUE_ERROR = -8,
+    MUTEX_ERROR = -9,
 } Errors;
 
 /// Константы для обозначения размеров полей структы Ont
@@ -43,6 +44,7 @@ typedef enum Ont_status
     ACTIVATION = 0,
     WORKING,
     CFGFAIL,
+    BLOCK,
 }   Ont_status;
 
 /// Константы для поиска в get_card_filter
@@ -77,22 +79,15 @@ typedef struct Ont_info
     enum Ont_status status;
 } Ont_info;
 
-/// Структура для хранения событий
-typedef struct Ont_records
-{
-    uint32_t cur_index_of_event;
-    uint32_t count_element;
-    struct Ont_connection ont_connection[NUM_OF_RECORDS];
-} Ont_records;
+/// Добавление нового события в базовую структуру
+int ont__add_card(struct Ont_info const *const ont_info);
 
 /// Функция получения карточки по одной ONT
 int ont__get_card(
     uint32_t const num_port,
     uint32_t const num_ont,
-    struct Ont_connection ont_connection[NUM_OF_RECORDS]);
-
-/// Добавление нового события в базовую структуру
-int ont__add_card(struct Ont_info const *const ont_info);
+    struct Ont_connection *const ont_connection,
+    size_t const size);
 
 // Функция получения карточек по одной ONT с фильтром
 int ont__get_card_filter(
