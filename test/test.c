@@ -221,8 +221,10 @@ int test_real_work(int const num_records)
     struct Ont_info ont_info = {0};
     struct Ont_connection received_cards[NUM_OF_RECORDS];
     struct Ont_connection sended_cards[num_records];
+    struct Ont_connection filter = {0};
     enum Errors errors = NO_ERRORS;
     bool compare_result = true;
+    enum Ont_status status;
 
     ont_info.num_port = 0;
     ont_info.num_ont = 0;
@@ -264,6 +266,20 @@ int test_real_work(int const num_records)
     compare_result = compare_cards(sended_cards, received_cards, num_records);
 
     compare_result ? printf("Перезапись произошла без ошибок! \n") : printf("Ошибочная перезапись! \n");
+    printf("\n");
+
+    status = ACTIVATION;
+    errors = ont__get_card_filter(0, 0, &status, &filter, FIND_STATUS);
+    
+    if (0 > errors )
+    {
+        goto finally;
+    }
+
+
+    printf("Фильтр по Activation \n");
+    printf("\n");
+    print_ont_connection(&filter);
     printf("\n");
 
  finally:
