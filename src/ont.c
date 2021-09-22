@@ -61,7 +61,6 @@ static void* find(
 __attribute__((constructor))
 static void _init(void) 
 {
-    pthread_rwlock_init(&lock, NULL);
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
