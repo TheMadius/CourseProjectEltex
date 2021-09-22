@@ -100,7 +100,7 @@
 
 #### &nbsp; &nbsp;&nbsp;<span style="font-weight: 700;">&nbsp;Описание:&nbsp;&nbsp;</span>
 &nbsp; &nbsp; &nbsp; &nbsp; Функция получения всех событий по одной ont. При успешном выполнении, функция возвращает код ошибки NO_ERRORS, а указатель ont_connection, имеет копию данных связанных с нужной ont. При наличии ошибки, функция возвращает код, соответствующий ошибке.
-#### &nbsp; &nbsp; &nbsp;**Прототип функции:**
+#### &nbsp; &nbsp; &nbsp;**Получение данных по одной ONT c фильтром**
 > &nbsp; &nbsp; &nbsp;&nbsp;int ont__get_card_filter(&nbsp; uint32_t const num_port,&nbsp; uint32_t const num_ont,&nbsp; void *const key, struct Ont_connection * const ont_connection, enum Card_filter filter);&nbsp;
 
 #### &nbsp; &nbsp; **&nbsp;Описание:&nbsp;&nbsp;**
