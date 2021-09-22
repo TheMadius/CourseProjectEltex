@@ -44,6 +44,7 @@ typedef enum Ont_status
     ACTIVATION = 0,
     WORKING,
     CFGFAIL,
+    BLOCK,
 }   Ont_status;
 
 /// Константы для поиска в get_card_filter
