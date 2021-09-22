@@ -1,2 +1,2 @@
 bin/
-scr/ont.o
+src/*.o
