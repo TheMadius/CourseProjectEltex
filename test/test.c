@@ -94,6 +94,8 @@ int test3_ont__get_card(uint32_t const num_port, uint32_t const num_ont)
 
 int main ()
 {
+    plan(7);
+
     cmp_ok(test1_ont__add_card(NULL), "==", NULL_PTR_ERROR,
         "Проверка функции ont__add_card при передаче в нее NULL.");
     cmp_ok(test2_ont__add_card(16), "==", NUM_PORT_ERROR,
