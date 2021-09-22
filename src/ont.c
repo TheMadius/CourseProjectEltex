@@ -87,10 +87,23 @@ static int ont__get_index(
     unsigned int *const index)
 {
     enum Errors errors = NO_ERRORS;
+    bool const is_num_port_in_range = (num_port < 0) || (num_port >= NUM_OF_PORTS);
+    bool const is_num_ont_in_range = (num_ont < 0) || (num_ont >= NUM_OF_ONT_ON_PORT);
   
     if (NULL == index)
     {
         errors = NULL_PTR_ERROR;
+        goto finally;
+    }
+
+    if (is_num_port_in_range)
+    {
+        errors = NUM_PORT_ERROR;
+        goto finally;
+    }
+    if (is_num_ont_in_range)
+    {
+        errors = NUM_ONT_ERROR;
         goto finally;
     }
 
@@ -154,6 +167,12 @@ int ont__get_card(
 
     if (errors < 0)
     {
+        goto finally;
+    }
+
+    if (ont_connection == NULL)
+    {
+        errors = NULL_PTR_ERROR;
         goto finally;
     }
 
