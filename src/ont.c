@@ -254,7 +254,7 @@ int ont__get_card_filter(
                             (bool (*)(const void *, const void *))find_status);
             if(NULL == data)
             {
-                error = NULL_PTR_ERROR;
+                error = NOT_FOUND_ERROR;
                 goto finally;
             }
             *ont_connection = *((struct Ont_connection *)data);
@@ -266,7 +266,7 @@ int ont__get_card_filter(
                             (bool (*)(const void *, const void *))find_time);
             if(NULL == data)
             {
-                error = NULL_PTR_ERROR;
+                error = NOT_FOUND_ERROR;
                 goto finally;
 
             }
