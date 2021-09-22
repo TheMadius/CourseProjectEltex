@@ -152,9 +152,9 @@
 #### **&nbsp; &nbsp;Структура с данными об ONT, которая поступает извне**
 **typedef struct Ont_info&nbsp;** **{**
 
-**&nbsp; &nbsp; uint32_t num_port; -**Номер порта.
+&nbsp; &nbsp; uint32_t num_port; - Номер порта.
 
-**&nbsp; &nbsp; uint32_t num_ont; -**Номер ONT.
+&nbsp; &nbsp; uint32_t num_ont; - Номер ONT.
 
 <span style="font-weight: 700;">&nbsp; &nbsp; char serial[ONT_SERIAL_SIZE]; -&nbsp;</span><span style="white-space: pre-wrap; background-color: transparent; color: rgb(0, 0, 0); font-family: Arial; font-size: 11pt;">Серийный номер ONT в текстовом формате</span>
 
