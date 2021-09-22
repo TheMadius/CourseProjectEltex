@@ -87,7 +87,6 @@
 > <br> &nbsp; &nbsp; errors = ont__get_card(0, 0, received_cards, 10);
 > <br> &nbsp; &nbsp; if(errors &lt; 0)
 > <br> &nbsp; &nbsp; {
-> <br> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
 > <br> &nbsp; &nbsp; &nbsp; &nbsp;<span style="font-weight: 700;">exit(</span><span style="font-weight: 700;">errors</span><span style="font-weight: 700;">);</span> 
 > <br> &nbsp; &nbsp; }
 - - -
@@ -103,7 +102,7 @@
 #### &nbsp; &nbsp;&nbsp;<span style="font-weight: 700;">&nbsp;Описание:&nbsp;&nbsp;</span>
 &nbsp; &nbsp; &nbsp; &nbsp; Функция получения всех событий по одной ont. При успешном выполнении, функция возвращает код ошибки NO_ERRORS, а указатель ont_connection, имеет копию данных связанных с нужной ont. При наличии ошибки, функция возвращает код, соответствующий ошибке.
 #### &nbsp; &nbsp; &nbsp;**Прототип функции:**
-> **&nbsp; &nbsp; &nbsp;&nbsp;**int ont__get_card_filter(&nbsp; uint32_t const num_port,&nbsp; uint32_t const num_ont,&nbsp; void *const key, struct Ont_connection * const ont_connection, enum Card_filter filter);&nbsp;
+> &nbsp; &nbsp; &nbsp;&nbsp;int ont__get_card_filter(&nbsp; uint32_t const num_port,&nbsp; uint32_t const num_ont,&nbsp; void *const key, struct Ont_connection * const ont_connection, enum Card_filter filter);&nbsp;
 
 #### &nbsp; &nbsp; **&nbsp;Описание:&nbsp;&nbsp;**
 &nbsp; &nbsp; &nbsp; &nbsp; Функция получения карточек по одной ONT с фильтром. При успешном выполнении, функция возвращает rод ошибки NO_ERRORS, а в аргумент&nbsp;<span style="font-size: 17.5px;">ont_connection</span>&nbsp;типа Ont_connection помещает, копию данных связанных с нужной ont по соответствующему фильтру. При наличии ошибки, функция возвращает код, соответствующий ошибке. Для сортировки необходимо использовать&nbsp;FIND_STATUS - для поиска по состояниям и&nbsp;FIND_TIME для поиска&nbsp; по времени.
