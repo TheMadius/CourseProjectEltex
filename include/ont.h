@@ -94,7 +94,7 @@ int ont__get_card(
 int ont__add_card(struct Ont_info const *const ont_info);
 
 // Функция получения карточек по одной ONT с фильтром
-int get_card_filter(
+int ont__get_card_filter(
     uint32_t const num_port,
     uint32_t const num_ont,
     void *const key,
