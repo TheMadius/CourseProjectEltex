@@ -84,13 +84,11 @@
 > <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
 > <br>&nbsp; &nbsp; }
 > <br>
-> <br>&nbsp; &nbsp;&nbsp;
-> <br>
 > <br> &nbsp; &nbsp; errors = ont__get_card(0, 0, received_cards, 10);
 > <br> &nbsp; &nbsp; if(errors &lt; 0)
 > <br> &nbsp; &nbsp; {
 > <br> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-> <br> <span style="font-weight: 700;">exit(</span><span style="font-weight: 700;">errors</span><span style="font-weight: 700;">);</span> 
+> <br> &nbsp; &nbsp; &nbsp; &nbsp;<span style="font-weight: 700;">exit(</span><span style="font-weight: 700;">errors</span><span style="font-weight: 700;">);</span> 
 > <br> &nbsp; &nbsp; }
 - - -
 ### <span style="font-weight: 700;">Функции:</span>
