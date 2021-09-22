@@ -1,56 +1,70 @@
 #include "ont.h"
 #include "pthread.h"
 
-///Функция сравнения 2 статусов
+/// Структура для хранения событий
+static typedef struct Ont_records
+{
+    uint32_t cur_index_of_event;
+    uint32_t count_element;
+    struct Ont_connection ont_connection[NUM_OF_RECORDS];
+} Ont_records;
+
+/** Функция сравнения статусов.
+ *  При совпадении статусов функция возвращает true,
+ *  иначе возвращает false.
+*/ 
 static bool find_status(
-                    const struct Ont_connection * ont,
-                    const enum Ont_status * status);
+                    const struct Ont_connection *const ont,
+                    const enum Ont_status *const status);
 
-///Функция сравнения времени 
+/** Функция сравнения времени.
+ *  При совпадении времени функция возвращает true,
+ *  иначе возвращает false.
+*/ 
 static bool find_time(
-                    const struct Ont_connection * ont,
-                    const time_t * time);
+                    const struct Ont_connection *const ont,
+                    const time_t *const time);
 
-/// Функция расчитывает уникальный индекс для индексации внутри базовой структуры 
+/// Функция расcчитывает уникальный индекс для индексации внутри базовой структуры 
 static int ont__get_index(
-    unsigned int const num_port,
-    unsigned int const num_ont,
-    unsigned int *const index
-    );
+    uint32_t const num_port,
+    uint32_t const num_ont,
+    uint32_t *const index);
 
-///Добавление нового элемента в список
+/// Функция добавления нового элемента в список
 static int list__add_element(
     struct Ont_connection *const element,
     struct Ont_records *const list);
 
-///Определить количество элементов списка
+/// Функция определения количества элементов списка
 static int list__get_size(
     struct Ont_records *const list,
     uint32_t *const count);
 
-///Инициализация списка 
+/// Функция инициализации списка
 static int list__init(struct Ont_records *const list);
 
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
+/// Мьютекс для синхронизации обращения к базовой структуре
 static pthread_rwlock_t lock = {0};
 
-/** Функция добавления нового события в базовую структуру
- * 
- * При успешном добавлении, функция возвращает NO_ERRORS и 
- * новое событие сохранено в базовой структуре, в соответствущем
- * для него месте в структуре.
- * 
- * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
-*/
-
+/// Функция инициализации библиотеки
 __attribute__((constructor))
 static void _init(void);
 
+/// Функция деинициализации библиотеки
 __attribute__((destructor))
 static void _fini(void);
 
+/** Функция поиска карточки, подходящей по фильтру.
+ * 
+ * При успешном выполнении, функция возвращает указатель на карточку,
+ * соответствующей фильтру.
+ * 
+ * При наличии ошибки, функция возвращает NULL.
+*/
 static void* find(
     void *base,
     void *const key,
@@ -82,13 +96,12 @@ static void _fini(void)
  * При успешном вычислении, функция возвращает NO_ERRORS и инициализирует
  * значение указателя index, вычисленным индексом.
  * 
- * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответствующий ошибке.
 */
-
 static int ont__get_index(
-    unsigned int const num_port, 
-    unsigned int const num_ont,
-    unsigned int *const index)
+    uint32_t const num_port, 
+    uint32_t const num_ont,
+    uint32_t *const index)
 {
     enum Errors errors = NO_ERRORS;
     bool const is_num_port_in_range = (num_port >= NUM_OF_PORTS);
@@ -124,12 +137,12 @@ static int ont__get_index(
  * новое событие сохранено в базовой структуре, в соответствущем
  * для него месте в структуре.
  * 
- * При наличии ошибки, функция возвращает код, соответсвующий ошибке.
+ * При наличии ошибки, функция возвращает код, соответствующий ошибке.
 */
 int ont__add_card(struct Ont_info const *const ont_info)
 {
     enum Errors errors = NO_ERRORS;
-    unsigned int index = 0;
+    uint32_t index = 0;
     struct Ont_connection ont_connection = {0};
 
     if (NULL == ont_info)
@@ -152,23 +165,49 @@ int ont__add_card(struct Ont_info const *const ont_info)
     ont_connection.link_down = ont_info->link_down;
     ont_connection.status = ont_info->status;
 
-    pthread_rwlock_wrlock(&lock);
+    errors = pthread_rwlock_wrlock(&lock);
+
+    if (errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        goto finally;
+    }
+
     errors = list__add_element(&ont_connection, &ont_records[index]);
-    pthread_rwlock_unlock(&lock);
+
+    errors = pthread_rwlock_unlock(&lock);
+
+    if (errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        goto finally;
+    }
 
  finally:
     return errors;
 }
 
-// Функция получения карточек по одной ONT
-
+/** Функция получения всех событий по одной ont
+ * 
+ * При успешном выполнении, функция возвращает код ошибки NO_ERRORS,
+ * а указатель ont_connection, имеет копию данных связанных с нужной ont.
+ * 
+ * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+*/
 int ont__get_card(
     uint32_t const num_port,
     uint32_t const num_ont,
-    struct Ont_connection ont_connection[NUM_OF_RECORDS])
+    struct Ont_connection *const ont_connection,
+    size_t const size)
 {
     enum Errors errors = NO_ERRORS;
-    unsigned int index = 0;
+    uint32_t index = 0;
+
+    if(NUM_OF_RECORDS != size)
+    {
+        errors = ARRAY_SIZE_ERROR;
+        goto finally;
+    }
 
     errors = ont__get_index(num_port, num_ont, &index);
 
@@ -177,29 +216,39 @@ int ont__get_card(
         goto finally;
     }
 
-    if (ont_connection == NULL)
+    if (NULL == ont_connection)
     {
         errors = NULL_PTR_ERROR;
         goto finally;
     }
     
-    pthread_rwlock_rdlock(&lock);
-    for(size_t i = 0; i < NUM_OF_RECORDS; i++)
+    errors = pthread_rwlock_rdlock(&lock);
+
+    if (errors < 0)
     {
-        ont_connection [i] = ont_records[index].ont_connection [i];
+        errors = MUTEX_ERROR;
+        goto finally;
     }
-    pthread_rwlock_unlock(&lock);
+
+    memcpy(ont_connection, ont_records[index].ont_connection, sizeof(struct Ont_connection) * NUM_OF_RECORDS);
+
+    errors = pthread_rwlock_unlock(&lock);
+
+    if (errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        goto finally;
+    }
     
  finally:
     return errors;
 }
 
-
 static void* find(
     void *base,
     void *const key,
-    size_t num,
-    size_t size,
+    size_t const num,
+    size_t const size,
     bool (*compare)(const void *, const void *))
 {
     void *result = NULL;
@@ -233,79 +282,91 @@ static bool find_time(
     return ont->link_up >= *time;
 }
 
-// Функция получения карточек по одной ONT с фильтром
+/** Функция получения карточек по одной ONT с фильтром.
+ * 
+ * При успешном выполнении, функция возвращает указатель на 
+ * массив типа Ont_connection, содержащий копию данных связанных с 
+ * нужной ont.
+ * При наличии ошибки, функция возвращает код, соответствующий ошибке.
+*/
 int ont__get_card_filter(
     uint32_t const num_port,
     uint32_t const num_ont,
     void *const key,
     struct Ont_connection * const ont_connection,
-    enum Card_filter filter)
+    enum Card_filter const filter)
 {
-    int error = NO_ERRORS;
-    unsigned int index = 0;
+    int errors = NO_ERRORS;
+    uint32_t index = 0;
+    void *data = NULL;
     struct Ont_records records = {0};
 
-    error = ont__get_index(num_port, num_ont, &index);
+    errors = ont__get_index(num_port, num_ont, &index);
 
-    if(error < 0)
+    if(errors < 0)
     {
         goto finally;
     }
 
     records = ont_records[index]; 
 
+    errors = pthread_rwlock_rdlock(&lock);
+    if (errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        goto finally;
+    }
+
     switch (filter)
     {
         case FIND_STATUS:
-        {    
-            pthread_rwlock_rdlock(&lock);
-            void *data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
+        {     
+            data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
                             (bool (*)(const void *, const void *))find_status);
-            if(NULL == data)
-            {
-                error = NOT_FOUND_ERROR;
-                pthread_rwlock_unlock(&lock);
-                goto finally;
-            }
-            *ont_connection = *((struct Ont_connection *)data);
-            pthread_rwlock_unlock(&lock);
             break;
         }
         case FIND_TIME:
         {    
-            pthread_rwlock_rdlock(&lock);
-            void *data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
+            data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
                             (bool (*)(const void *, const void *))find_time);
-            if(NULL == data)
-            {
-                error = NOT_FOUND_ERROR;
-                pthread_rwlock_unlock(&lock);
-                goto finally;
-            }
-            *ont_connection = *((struct Ont_connection *)data);
-            pthread_rwlock_unlock(&lock);
-
             break;
         }
         default:
         {
-            error = NOT_FOUND_ERROR;
+            errors = NOT_FOUND_ERROR;
+            pthread_rwlock_unlock(&lock);
             goto finally;
         }
+    }
+
+    if(NULL == data)
+    {
+        errors = NOT_FOUND_ERROR;
+        pthread_rwlock_unlock(&lock);
+        goto finally;
+    }
+
+    *ont_connection = *((struct Ont_connection *)data);
+
+    errors = pthread_rwlock_unlock(&lock);
+    if (errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        goto finally;
     }
     
  finally:
 
-    return error;
+    return errors;
 }
 
 
 static int list__init(struct Ont_records *const list)
 {
-    int error = NO_ERRORS;
+    int errors = NO_ERRORS;
     if(NULL == list)
     {
-        error = LIST_NULL_ERROR;
+        errors = LIST_NULL_ERROR;
         goto finally;
     }
 
@@ -314,24 +375,24 @@ static int list__init(struct Ont_records *const list)
     
  finally:
     
-    return error;
+    return errors;
 }
 
 static int list__get_size(
     struct Ont_records *const list,
     uint32_t *const count)
 {
-    int error = NO_ERRORS;
+    int errors = NO_ERRORS;
 
     if(NULL == list)
     {
-        error = LIST_NULL_ERROR;
+        errors = LIST_NULL_ERROR;
         goto finally;
     }
 
     if(NULL == count)
     {
-        error = NULL_PTR_ERROR;
+        errors = NULL_PTR_ERROR;
         goto finally;
     }
     
@@ -339,25 +400,25 @@ static int list__get_size(
     
  finally:
     
-    return error;
+    return errors;
 }
 
 static int list__add_element(
     struct Ont_connection *const element,
     struct Ont_records *const list)
 {   
-    int error = NO_ERRORS;
+    int errors = NO_ERRORS;
     uint32_t index_add = 0;
 
     if(NULL == element)
     {
-        error = VALUE_NULL_ERROR;
+        errors = VALUE_NULL_ERROR;
         goto finally;
     }
 
     if(NULL == list)
     {
-        error = LIST_NULL_ERROR;
+        errors = LIST_NULL_ERROR;
         goto finally;
     }
 
@@ -377,11 +438,11 @@ static int list__add_element(
     list->cur_index_of_event++;
     
     list->count_element++;
-    error = list__get_size(list, &(list->count_element)); 
+    errors = list__get_size(list, &(list->count_element)); 
 
-    if(0 > error)
+    if(0 > errors)
     {
-        error = NULL_PTR_ERROR;
+        errors = NULL_PTR_ERROR;
         goto finally;
     }
 
@@ -389,6 +450,5 @@ static int list__add_element(
 
  finally:
 
-    return error;
-
+    return errors;
 }

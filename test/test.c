@@ -134,23 +134,23 @@ int main ()
     cmp_ok(test1_ont__add_card(NULL), "==", NULL_PTR_ERROR,
         "Проверка функции ont__add_card при передаче в нее NULL.");
     cmp_ok(test2_ont__add_card(16), "==", NUM_PORT_ERROR,
-        "Проверка функции ont__add_card на ввод порта вне допустимого диапозона.");
+        "Проверка функции ont__add_card на ввод порта вне допустимого диапазона.");
     cmp_ok(test3_ont__add_card(128), "==", NUM_ONT_ERROR,
-        "Проверка функции ont__add_card на ввод номера ont вне допустимого диапозона.");
+        "Проверка функции ont__add_card на ввод номера ont вне допустимого диапазона.");
 
     cmp_ok(test1_ont__get_card(16, 0), "==", NUM_PORT_ERROR,
-        "Проверка функции ont__get_card на ввод порта вне допустимого диапозона.");
+        "Проверка функции ont__get_card на ввод порта вне допустимого диапазона.");
     cmp_ok(test1_ont__get_card(0, 128), "==", NUM_ONT_ERROR,
-        "Проверка функции ont__get_card на ввод номера ont вне допустимого диапозона.");
+        "Проверка функции ont__get_card на ввод номера ont вне допустимого диапазона.");
     cmp_ok(test2_ont__get_card(), "==", NULL_PTR_ERROR,
         "Проверка функции ont__get_card при передаче в нее NULL.");
     cmp_ok(test3_ont__get_card(2, 5), "==", NO_ERRORS,
         "Проверка функции ont__get_card на валидность записи.");
 
     cmp_ok(test_ont__get_card_filter(1, 1, 16, 0, ACTIVATION, WORKING), "==", NUM_PORT_ERROR,
-        "Проверка функции ont__get_card_filter на ввод порта вне допустимого диапозона.");
+        "Проверка функции ont__get_card_filter на ввод порта вне допустимого диапазона.");
     cmp_ok(test_ont__get_card_filter(1, 1, 0, 128, ACTIVATION, WORKING), "==", NUM_ONT_ERROR,
-        "Проверка функции ont__get_card_filter на ввод номера ont вне допустимого диапозона.");
+        "Проверка функции ont__get_card_filter на ввод номера ont вне допустимого диапазона.");
     cmp_ok(test_ont__get_card_filter(1, 1, 1, 1, ACTIVATION, WORKING), "==", NOT_FOUND_ERROR,
         "Проверка функции ont__get_card_filter при разных событиях.");
     cmp_ok(test_ont__get_card_filter(1, 1, 1, 2, ACTIVATION, ACTIVATION), "==", NOT_FOUND_ERROR,
