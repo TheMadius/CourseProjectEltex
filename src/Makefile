@@ -1,6 +1,7 @@
 CC=gcc
-CFLAGS=-fPIC -Wall -std=c99
+CFLAGS=-fPIC
 LDFLAGS=-shared -nostdlib
+FLAGL=-lpthread
 PATHL=../bin/
 PATHINC=../include
 NAMEL=libontconnection.so
@@ -12,14 +13,14 @@ all: $(NAMEL)
 	
 $(NAMEL): $(OBJECTS)
 	mkdir -p $(PATHL)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHL)$(NAMEL)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $(PATHL)$(NAMEL) $(FLAGL)
 	cp $(HEADERS) $(PATHINC)
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
 .c.o:
-	$(CC) $(CFLAGS) $< -c 
+	$(CC) $(CFLAGS) $< -c
 
 $(SRCS): $(HEADERS)
 	@touch $@

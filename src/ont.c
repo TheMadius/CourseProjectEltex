@@ -1,4 +1,5 @@
 #include "ont.h"
+#include "pthread.h"
 
 ///Функция сравнения 2 статусов
 static bool find_status(
@@ -33,6 +34,8 @@ static int list__init(struct Ont_records *const list);
 /// Базовая структура для хранения информации об ONT соединений
 static struct Ont_records ont_records[NUM_OF_ONT_CONNECTIONS] = {0};
 
+static pthread_rwlock_t lock = {0};
+
 /** Функция добавления нового события в базовую структуру
  * 
  * При успешном добавлении, функция возвращает NO_ERRORS и 
@@ -58,6 +61,7 @@ static void* find(
 __attribute((constructor))
 static void _init(void) 
 {
+    pthread_rwlock_init(&lock, NULL);
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
@@ -148,7 +152,9 @@ int ont__add_card(struct Ont_info const *const ont_info)
     ont_connection.link_down = ont_info->link_down;
     ont_connection.status = ont_info->status;
 
+    pthread_rwlock_wrlock(&lock);
     errors = list__add_element(&ont_connection, &ont_records[index]);
+    pthread_rwlock_unlock(&lock);
 
  finally:
     return errors;
@@ -176,11 +182,13 @@ int ont__get_card(
         errors = NULL_PTR_ERROR;
         goto finally;
     }
-
+    
+    pthread_rwlock_rdlock(&lock);
     for(size_t i = 0; i < NUM_OF_RECORDS; i++)
     {
         ont_connection [i] = ont_records[index].ont_connection [i];
     }
+    pthread_rwlock_unlock(&lock);
     
  finally:
     return errors;
@@ -249,28 +257,34 @@ int ont__get_card_filter(
     switch (filter)
     {
         case FIND_STATUS:
-        {
+        {    
+            pthread_rwlock_rdlock(&lock);
             void *data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
                             (bool (*)(const void *, const void *))find_status);
             if(NULL == data)
             {
                 error = NOT_FOUND_ERROR;
+                pthread_rwlock_unlock(&lock);
                 goto finally;
             }
             *ont_connection = *((struct Ont_connection *)data);
+            pthread_rwlock_unlock(&lock);
             break;
         }
         case FIND_TIME:
-        {
+        {    
+            pthread_rwlock_rdlock(&lock);
             void *data = find(records.ont_connection, key, records.count_element, sizeof(struct Ont_connection),
                             (bool (*)(const void *, const void *))find_time);
             if(NULL == data)
             {
                 error = NOT_FOUND_ERROR;
+                pthread_rwlock_unlock(&lock);
                 goto finally;
-
             }
             *ont_connection = *((struct Ont_connection *)data);
+            pthread_rwlock_unlock(&lock);
+
             break;
         }
         default:
