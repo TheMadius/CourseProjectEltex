@@ -180,6 +180,7 @@ int ont__get_card(
     {
         ont_connection [i] = ont_records[index].ont_connection [i];
     }
+    
  finally:
     return errors;
 }
@@ -224,7 +225,7 @@ static bool find_time(
 }
 
 // Функция получения карточек по одной ONT с фильтром
-int get_card_filter(
+int ont__get_card_filter(
     uint32_t const num_port,
     uint32_t const num_ont,
     void *const key,
