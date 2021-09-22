@@ -2,7 +2,7 @@
 #include "pthread.h"
 
 /// Структура для хранения событий
-static typedef struct Ont_records
+typedef struct Ont_records
 {
     uint32_t cur_index_of_event;
     uint32_t count_element;
