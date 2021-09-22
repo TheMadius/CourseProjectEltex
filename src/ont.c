@@ -58,7 +58,7 @@ static void* find(
     size_t size,
     bool (*compare)(const void *, const void *));
 
-__attribute((constructor))
+__attribute__((constructor))
 static void _init(void) 
 {
     pthread_rwlock_init(&lock, NULL);
