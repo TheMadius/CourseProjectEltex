@@ -75,7 +75,15 @@ static void* find(
 __attribute__((constructor))
 static void _init(void) 
 {
-    pthread_rwlock_init(&lock, NULL);
+    enum Errors errors = NO_ERRORS;
+
+    errors = pthread_rwlock_init(&lock, NULL);
+    if(errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        exit(errors);
+    }
+
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
@@ -85,6 +93,15 @@ static void _init(void)
 __attribute__((destructor))
 static void _fini(void) 
 {
+    enum Errors errors = NO_ERRORS;
+
+    errors = pthread_rwlock_destroy(&lock);
+    if(errors < 0)
+    {
+        errors = MUTEX_ERROR;
+        exit(errors);
+    }
+
     for(int i = 0; i < NUM_OF_ONT_CONNECTIONS; i++) 
     {
         list__init(&ont_records[i]);
