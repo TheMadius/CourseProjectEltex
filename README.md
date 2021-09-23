@@ -60,7 +60,7 @@
 
 - <span style="font-size: 11pt; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;">Валидность входных аргументов для внешнего API</span>
 
-- <span style="font-size: 11pt; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;">Демонстрацией работы: имитация нескольких добавлени и т.п., получение карточек и сравнение с эталоном.</span>
+- <span style="font-size: 11pt; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;">Имитацию работы: имитация нескольких добавлений и т.п., получение карточек и сравнение с эталоном.</span>
 - - -
 ### <span style="font-weight: 700;">Пример:</span>
 > <br>&nbsp; &nbsp; struct Ont_info ont_info = {0};
@@ -104,7 +104,7 @@
 > &nbsp; &nbsp; &nbsp;&nbsp;int ont__get_card_filter(&nbsp; uint32_t const num_port,&nbsp; uint32_t const num_ont,&nbsp; void *const key, struct Ont_connection * const ont_connection, enum Card_filter filter);&nbsp;
 
 #### &nbsp; &nbsp; **&nbsp;Описание:&nbsp;&nbsp;**
-&nbsp; &nbsp; &nbsp; &nbsp; Функция получения карточек по одной ONT с фильтром. При успешном выполнении, функция возвращает rод ошибки NO_ERRORS, а в аргумент&nbsp;<span style="font-size: 17.5px;">ont_connection</span>&nbsp;типа Ont_connection помещает, копию данных связанных с нужной ont по соответствующему фильтру. При наличии ошибки, функция возвращает код, соответствующий ошибке. Для сортировки необходимо использовать&nbsp;FIND_STATUS - для поиска по состояниям и&nbsp;FIND_TIME для поиска&nbsp; по времени.
+&nbsp; &nbsp; &nbsp; &nbsp; Функция получения карточек по одной ONT с фильтром. При успешном выполнении, функция возвращает код ошибки NO_ERRORS, а в аргумент&nbsp;<span style="font-size: 17.5px;">ont_connection</span>&nbsp;типа Ont_connection помещает, копию данных связанных с нужной ont по соответствующему фильтру. При наличии ошибки, функция возвращает код, соответствующий ошибке. Для сортировки необходимо использовать&nbsp;FIND_STATUS - для поиска по состояниям и&nbsp;FIND_TIME для поиска&nbsp; по времени.
 - - -
 ### **&nbsp; &nbsp; &nbsp;Ошибки:**
 &nbsp; &nbsp; При работе с библиотекой могут возникнуть следующие ошибки:
